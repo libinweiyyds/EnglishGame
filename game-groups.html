@@ -72,7 +72,7 @@
 
         <div class="hint-row">
             <button class="act-btn act-undo" id="resetBtn" onclick="resetRound()">重置本轮</button>
-            <button class="act-btn act-submit" id="checkBtn" onclick="checkAnswer()" disabled>检查答案</button>
+            <button class="act-btn act-submit" id="checkBtn" onclick="checkAnswer()">检查答案</button>
             <button class="act-btn act-reveal" id="revealBtn" onclick="revealAnswer()">查看答案</button>
         </div>
 
@@ -134,6 +134,7 @@ function renderQuestion() {
     document.getElementById('skipBtn').disabled = false;
     document.getElementById('resetBtn').disabled = false;
     document.getElementById('revealBtn').disabled = false;
+    document.getElementById('checkBtn').disabled = false;
 
     document.getElementById('instruction').textContent = currentQ.instruction || '拖动词到正确的分类里';
     document.getElementById('hintText').textContent = getHintByGame(GAME_ID);
@@ -232,9 +233,8 @@ function onDrop(e) {
 }
 
 function updateCheckButton() {
-    const total = Object.keys(wordPlacements).length;
     const placed = Object.values(wordPlacements).filter(v => v !== null).length;
-    document.getElementById('checkBtn').disabled = (placed < total) || answered;
+    document.getElementById('checkBtn').disabled = answered;
 }
 
 function checkAnswer() {
@@ -253,7 +253,8 @@ function checkAnswer() {
         });
     });
 
-    const ok = correctCount === Object.keys(wordPlacements).length && totalPlaced === Object.keys(wordPlacements).length;
+    const totalWords = Object.keys(wordPlacements).length;
+    const ok = correctCount === totalWords && totalPlaced === totalWords;
 
     if (ok) {
         answered = true;
@@ -277,8 +278,21 @@ function checkAnswer() {
     } else {
         // 失败：允许继续拖动 / 重置 / 再次检查 / 查看答案
         streak = 0;
+        // 清除上一次的红绿样式
+        document.querySelectorAll('.draggable-word').forEach(el => {
+            el.classList.remove('placed-correct', 'placed-wrong');
+        });
         const wrongCount = totalPlaced - correctCount;
-        document.getElementById('feedback').innerHTML = `<span class="feedback-bad"> 还有 ${wrongCount} 个分错了～ 再试试</span>`;
+        const unplacedCount = totalWords - totalPlaced;
+        let msg = '';
+        if (totalPlaced === 0) {
+            msg = '把词拖到分类里再检查吧～';
+        } else if (wrongCount === 0 && unplacedCount > 0) {
+            msg = `分得对 ${correctCount} 个，但还有 ${unplacedCount} 个没分呢～`;
+        } else {
+            msg = `还有 ${wrongCount} 个分错了～ 再试试`;
+        }
+        document.getElementById('feedback').innerHTML = `<span class="feedback-bad">${msg}</span>`;
         // 高亮显示错误放置（红框）和正确放置（绿框）
         cats.forEach((cat, ci) => {
             const correctSet = new Set(cat.words.map(w => w.toLowerCase()));
@@ -294,7 +308,6 @@ function checkAnswer() {
                 }
             });
         });
-        // 反馈后清掉红绿样式，用户可以重新拖动
     }
     updateProgress();
 }
@@ -308,6 +321,9 @@ function resetRound() {
     Object.keys(wordPlacements).forEach(w => wordPlacements[w] = null);
     renderPool();
     document.getElementById('feedback').innerHTML = '';
+    document.querySelectorAll('.draggable-word').forEach(el => {
+        el.classList.remove('placed-correct', 'placed-wrong');
+    });
 }
 
 function revealAnswer() {

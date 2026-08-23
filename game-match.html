@@ -55,7 +55,11 @@
         </div>
 
         <div class="stage-header">
-            <div class="stage-badge">🧩 找意思</div>
+            <div class="mode-switch" id="modeSwitch">
+                <button class="mode-btn active" data-mode="en2zh" onclick="setMode('en2zh')">英 ➜ 中</button>
+                <button class="mode-btn" data-mode="zh2en" onclick="setMode('zh2en')">中 ➜ 英</button>
+            </div>
+            <div class="stage-badge">🧩 <span id="modeLabel">找意思</span></div>
             <h2 class="stage-question" id="bigWord">Cat</h2>
             <p class="stage-instruction" id="instruction">选择与单词意思匹配的选项</p>
         </div>
@@ -108,6 +112,23 @@ let roundIndex = 0;
 let score = 0;
 let streak = 0;
 let answered = false;
+let currentMode = 'en2zh';
+
+function setMode(mode) {
+    if (mode === currentMode) return;
+    currentMode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.mode === mode);
+    });
+    document.getElementById('modeLabel').textContent = (mode === 'en2zh') ? '找意思（英 ➜ 中）' : '找中文（中 ➜ 英）';
+    document.getElementById('instruction').textContent = (mode === 'en2zh')
+        ? '选择与单词意思匹配的选项'
+        : '选出这个中文词对应的英文';
+    roundIndex = 0;
+    score = 0;
+    streak = 0;
+    renderQuestion();
+}
 
 async function init() {
     const bank = await loadQuestionBank();
@@ -121,6 +142,15 @@ async function init() {
     renderQuestion();
 }
 
+function getDisplayParts(q) {
+    if (currentMode === 'en2zh') {
+        return { mainText: q.question, tagText: '⭐ 英文单词', optionsAreZh: true };
+    } else {
+        const zh = translateZh(q.question) || q.question;
+        return { mainText: zh, tagText: '⭐ 中文词', optionsAreZh: false };
+    }
+}
+
 function renderQuestion() {
     if (roundIndex >= questions.length) {
         showResult();
@@ -132,9 +162,10 @@ function renderQuestion() {
     updateProgress();
 
     const q = questions[roundIndex];
-    document.getElementById('instruction').textContent = q.instruction || '选择与单词意思匹配的选项';
-    document.getElementById('bigWord').textContent = q.question;
-    document.getElementById('wordCardText').textContent = q.question;
+    const parts = getDisplayParts(q);
+    document.getElementById('bigWord').textContent = parts.mainText;
+    document.getElementById('wordCardText').textContent = parts.mainText;
+    document.querySelector('.word-card-tag').textContent = parts.tagText;
     document.getElementById('hintText').textContent = getHintByGame(GAME_ID);
     document.getElementById('solutionContent').textContent = q.extra || '';
     document.getElementById('feedback').innerHTML = '';
@@ -144,15 +175,17 @@ function renderQuestion() {
     document.getElementById('hintBtn').disabled = false;
     document.getElementById('skipBtn').disabled = false;
 
-    // 重置词卡动画
     const card = document.getElementById('wordCard');
     card.style.animation = 'none';
     void card.offsetWidth;
     card.style.animation = '';
 
-    // 渲染选项（带 emoji）
+    const displayOptions = (currentMode === 'zh2en')
+        ? q.options.map(o => translateEn(o) || o)
+        : q.options;
+
     const grid = document.getElementById('optionsGrid');
-    grid.innerHTML = q.options.map((opt, i) => {
+    grid.innerHTML = displayOptions.map((opt) => {
         return `
             <button class="option-tile" data-value="${escapeHtml(opt)}" onclick="choose(this)">
                 <span class="option-text">${escapeHtml(opt)}</span>
@@ -168,7 +201,13 @@ function updateProgress() {
 function choose(btn) {
     if (answered) return;
     const value = btn.dataset.value;
-    const correct = questions[roundIndex].answer;
+    const q = questions[roundIndex];
+    let correct;
+    if (currentMode === 'zh2en') {
+        correct = translateEn(q.answer) || q.answer;
+    } else {
+        correct = q.answer;
+    }
 
     const ok = value === correct;
     if (ok) {
@@ -189,13 +228,19 @@ function choose(btn) {
         document.getElementById('hintBtn').disabled = true;
         document.getElementById('skipBtn').disabled = true;
     } else {
-        // 错选：标记这个选项为 wrong，替换文字为"单词(中文)"，不解锁其它选项
         streak = 0;
         btn.classList.add('wrong');
         btn.disabled = true;
-        const qWord = (questions[roundIndex].question || '').toString().trim();
         const span = btn.querySelector('.option-text');
-        if (span) span.textContent = `${qWord}（${value}）`;
+        let newText = '';
+        if (currentMode === 'en2zh') {
+            const en = translateEn(value);
+            newText = en ? `${value}（${en}）` : `${value}（×）`;
+        } else {
+            const zh = translateZh(value);
+            newText = zh ? `${value}（${zh}）` : `${value}（×）`;
+        }
+        if (span) span.textContent = newText;
         playError();
         document.getElementById('feedback').innerHTML = `<span class="feedback-bad"> 不是这个～ 再想想</span>`;
     }
@@ -219,7 +264,12 @@ function skipQuestion() {
     if (answered) return;
     answered = true;
     streak = 0;
-    const correct = questions[roundIndex].answer;
+    let correct;
+    if (currentMode === 'zh2en') {
+        correct = translateEn(questions[roundIndex].answer) || questions[roundIndex].answer;
+    } else {
+        correct = questions[roundIndex].answer;
+    }
     document.querySelectorAll('.option-tile').forEach(b => {
         b.disabled = true;
         if (b.dataset.value === correct) b.classList.add('correct');

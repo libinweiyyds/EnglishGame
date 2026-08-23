@@ -143,6 +143,37 @@ body.theme-sunny { background: linear-gradient(180deg, #fffbeb 0%, #f7d794 100%)
     margin-bottom: 8px;
     text-transform: uppercase;
 }
+
+.mode-switch {
+    display: inline-flex;
+    gap: 6px;
+    padding: 4px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 40px;
+    border: 2px solid rgba(85, 199, 166, 0.25);
+    margin-bottom: 10px;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.04);
+}
+.mode-btn {
+    border: none;
+    background: transparent;
+    color: #6b5f7a;
+    font-size: 13px;
+    font-weight: 900;
+    padding: 6px 14px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    letter-spacing: 0.04em;
+}
+.mode-btn:hover { background: rgba(85, 199, 166, 0.10); color: #2a8b6e; }
+.mode-btn.active {
+    background: linear-gradient(135deg, #55c7a6, #2a8b6e);
+    color: #fff;
+    box-shadow: 0 3px 0 #1d6a52;
+    transform: translateY(-1px);
+}
+.mode-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #1d6a52; }
 .stage-question {
     font-size: 36px;
     margin: 2px 0;
