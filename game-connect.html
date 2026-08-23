@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🔗 词语桥梁 · 找规律</title>
+    <title>🧩 词语桥梁 · 找规律</title>
     <link rel="stylesheet" href="./assets/emoji.css" />
     <link rel="stylesheet" href="./common.css" />
     <link rel="stylesheet" href="./game.css" />
@@ -13,8 +13,8 @@
 <div class="bg-decor">
     <span class="balloon b1">🎈</span>
     <span class="balloon b2">🎈</span>
-    <span class="cloud c1">☁️</span>
-    <span class="cloud c2">☁️</span>
+    <span class="cloud c1">~</span>
+    <span class="cloud c2">~</span>
     <span class="sparkle s1">✨</span>
     <span class="sparkle s2">⭐</span>
     <span class="sparkle s3">✨</span>
@@ -23,11 +23,11 @@
 
 <header class="topbar">
     <div class="logo">
-        <span class="logo-mark">🔗</span>
+        <span class="logo-mark">🧩</span>
         <span class="logo-text">词语<em>桥梁</em></span>
     </div>
     <div class="topbar-actions">
-        <a class="chip-btn" href="./index.html">← 回到大厅</a>
+        <a class="chip-btn" href="./index.html">◀ 回到大厅</a>
         <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">🔊 声音: 开</button>
     </div>
 </header>
@@ -42,7 +42,7 @@
             <div class="progress-bar"><i id="progressFill"></i></div>
         </div>
         <div class="hud-right">
-            <span class="hud-emoji">⭐</span>
+            <span class="hud-emoji"></span>
             <span class="hud-label">得分 <strong id="scoreStat">0</strong></span>
             <span class="hud-streak" id="streakBadge"></span>
         </div>
@@ -50,11 +50,11 @@
 
     <div class="stage-panel stage-purple">
         <div class="stage-emoji-deco">
-            <span>🌉</span><span>✨</span><span>⭐</span>
+            <span></span><span></span><span></span>
         </div>
 
         <div class="stage-header">
-            <div class="stage-badge">🌉 词语桥梁</div>
+            <div class="stage-badge">🧩 词语桥梁</div>
             <h2 class="stage-question" id="instruction">看看左边一对的关系，把右边也连起来！</h2>
         </div>
 
@@ -64,7 +64,7 @@
                 <div class="bridge-node" id="leftNodeA"></div>
                 <div class="bridge-link">
                     <span class="bridge-line"></span>
-                    <span class="bridge-arrow">→</span>
+                    <span class="bridge-arrow">▶</span>
                 </div>
                 <div class="bridge-node" id="leftNodeB"></div>
             </div>
@@ -78,7 +78,7 @@
                 <div class="bridge-node" id="rightNodeA"></div>
                 <div class="bridge-link">
                     <span class="bridge-line bridge-line-q"></span>
-                    <span class="bridge-arrow bridge-arrow-q">→</span>
+                    <span class="bridge-arrow bridge-arrow-q">▶</span>
                 </div>
                 <div class="bridge-node bridge-node-q">？</div>
             </div>
@@ -91,7 +91,7 @@
 
         <div class="hint-row">
             <button class="hint-btn" id="hintBtn" onclick="toggleHint()">💡 我要看提示</button>
-            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">⏭️ 跳过</button>
+            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">▶▶ 跳过</button>
         </div>
         <div class="hint-text" id="hintText"></div>
         <div class="solution-box" id="solutionBox">
@@ -100,12 +100,12 @@
         </div>
 
         <div class="next-row">
-            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 →</button>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 ▶</button>
         </div>
     </div>
 </main>
 
-<footer>🔗 词语桥梁 · 找出 A:B = C:? 的关系</footer>
+<footer>🧩 词语桥梁 · 找出 A:B = C:? 的关系</footer>
 
 <script src="./questions.js"></script>
 <script src="./common.js"></script>
@@ -115,28 +115,7 @@ let questions = [];
 let roundIndex = 0, score = 0, streak = 0, answered = false;
 
 function emojiForPair(word) {
-    if (!word) return '🌟';
-    const w = word.trim().split(/\s+/)[0].toLowerCase();
-    const map = {
-        cat: '🐱', dog: '🐶', hand: '✋', foot: '🦶', bread: '🍞', book: '📚',
-        water: '💧', food: '🍱', rain: '🌧️', sun: '☀️',
-        doctor: '👨‍⚕️', teacher: '👩‍🏫', bird: '🐦', bee: '🐝', king: '🤴', queen: '👸',
-        car: '🚗', plane: '✈️', pencil: '✏️', scissors: '✂️',
-        hot: '🔥', cold: '❄️', fast: '⚡', slow: '🐢',
-        puppy: '🐶', kitten: '🐱', fish: '🐟',
-        school: '🏫', library: '📚',
-        oxygen: '🅾️', fire: '🔥', carbon: '⚫', diamond: '💎',
-        clock: '🕐', time: '⏰', thermometer: '🌡️',
-        microscope: '🔬', telescope: '🔭',
-        lawyer: '⚖️', court: '🏛️', engineer: '👷', construction: '🏗️',
-        democracy: '🗳️', vote: '🗳️', autocracy: '👑', decree: '📜',
-        euclidean: '📐', geometry: '📐', boolean: '🔢',
-        darwin: '🧬', evolution: '🧬', newton: '🍎', gravity: '🍎',
-        plato: '🏛️', philosophy: '🏛️', euclid: '📐',
-        ink: '🖋️', pen: '🖊️', lead: '✏️', pencil: '✏️',
-        sonnet: '📜', poetry: '📜', fugue: '🎼', music: '🎵'
-    };
-    return map[w] || '🌟';
+    return '';
 }
 
 async function init() {
@@ -144,7 +123,7 @@ async function init() {
     const diff = getDifficulty();
     questions = shuffleArray([...(bank[GAME_ID]?.[diff] || bank[GAME_ID]?.easy || [])]);
     if (questions.length === 0) {
-        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state">😢 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
+        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state"> 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
         return;
     }
     document.getElementById('totalRounds').textContent = questions.length;
@@ -221,8 +200,8 @@ function choose(btn) {
         btn.classList.add('correct');
         playPop();
         spawnConfetti(document.querySelector('.stage-panel'), 25);
-        spawnFloatingEmoji('🌉', document.querySelector('.stage-panel'));
-        document.getElementById('feedback').innerHTML = `<span class="feedback-good">🎉 完美对接！<small>+100 ⭐</small></span>`;
+        spawnFloatingEmoji('', document.querySelector('.stage-panel'));
+        document.getElementById('feedback').innerHTML = `<span class="feedback-good"> 完美对接！<small>+100 </small></span>`;
         document.getElementById('solutionBox').classList.add('show');
         document.getElementById('nextBtn').classList.add('show');
         document.getElementById('hintBtn').disabled = true;
@@ -236,7 +215,7 @@ function choose(btn) {
         const zh = translateZh(value);
         if (span) span.textContent = zh ? `${value}（${zh}）` : `${value}`;
         playError();
-        document.getElementById('feedback').innerHTML = `<span class="feedback-bad">😢 不是这个～ 再想想</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="feedback-bad"> 不是这个～ 再想想</span>`;
     }
     document.getElementById('scoreStat').textContent = score;
     updateProgress();
@@ -244,7 +223,7 @@ function choose(btn) {
 
 function showStreak(n) {
     const badge = document.getElementById('streakBadge');
-    badge.textContent = `🔥 连对 ${n} 题！`;
+    badge.textContent = ` 连对 ${n} 题！`;
     badge.classList.add('show');
     setTimeout(() => badge.classList.remove('show'), 1800);
 }
@@ -260,7 +239,7 @@ function skipQuestion() {
         b.disabled = true;
         if (b.dataset.value === correct) b.classList.add('correct');
     });
-    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">⏭️ 跳过了这题。</span>`;
+    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">▶▶ 跳过了这题。</span>`;
     document.getElementById('solutionBox').classList.add('show');
     document.getElementById('nextBtn').classList.add('show');
     document.getElementById('hintBtn').disabled = true;
@@ -274,21 +253,21 @@ function showResult() {
     const total = questions.length;
     const pct = score / (total * 100);
     let stars, title, msg;
-    if (pct >= 1) { stars = '⭐⭐⭐'; title = '🏆 桥梁大师！'; msg = '你的逻辑能力超棒！'; }
-    else if (pct >= 0.6) { stars = '⭐⭐☆'; title = '🌟 不错！'; msg = '再多练几次就更稳了～'; }
-    else { stars = '⭐☆☆'; title = '💪 加油！'; msg = '每一道题都在让你变聪明！'; }
+    if (pct >= 1) { stars = ''; title = ' 🌉 桥梁大师！'; msg = '你的逻辑能力超棒！'; }
+    else if (pct >= 0.6) { stars = ''; title = ' 不错！'; msg = '再多练几次就更稳了～'; }
+    else { stars = ''; title = ' 加油！'; msg = '每一道题都在让你变聪明！'; }
 
     const panel = document.querySelector('.stage-panel');
     panel.innerHTML = `
         <div class="result-screen">
-            <div class="result-trophy">🌉</div>
+            <div class="result-trophy">🏆</div>
             <h2>${title}</h2>
             <div class="result-stars">${stars}</div>
             <div class="result-score">${score}<small> / ${total * 100}</small></div>
             <p>${msg}</p>
             <div class="result-actions">
-                <a class="next-btn" href="./game-connect.html">🔄 再玩一次</a>
-                <a class="home-btn" href="./index.html">🏠 回大厅</a>
+                <a class="next-btn" href="./game-connect.html"> 再玩一次</a>
+                <a class="home-btn" href="./index.html"> 回大厅</a>
             </div>
         </div>
     `;

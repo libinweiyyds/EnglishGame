@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>�� 分类小达人 · 分一分</title>
+    <title>🧩 分类小达人 · 分一分</title>
     <link rel="stylesheet" href="./assets/emoji.css" />
     <link rel="stylesheet" href="./common.css" />
     <link rel="stylesheet" href="./game.css" />
@@ -11,10 +11,10 @@
 </head>
 <body class="theme-sunny">
 <div class="bg-decor">
-    <span class="balloon b1">��</span>
-    <span class="balloon b2">��</span>
-    <span class="cloud c1">☁️</span>
-    <span class="cloud c2">☁️</span>
+    <span class="balloon b1">🎈</span>
+    <span class="balloon b2">🎈</span>
+    <span class="cloud c1">~</span>
+    <span class="cloud c2">~</span>
     <span class="sparkle s1">✨</span>
     <span class="sparkle s2">⭐</span>
     <span class="sparkle s3">✨</span>
@@ -23,26 +23,26 @@
 
 <header class="topbar">
     <div class="logo">
-        <span class="logo-mark">��</span>
+        <span class="logo-mark">🧩</span>
         <span class="logo-text">分类<em>小达人</em></span>
     </div>
     <div class="topbar-actions">
-        <a class="chip-btn" href="./index.html">← 回到大厅</a>
-        <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">�� 声音: 开</button>
+        <a class="chip-btn" href="./index.html">◀ 回到大厅</a>
+        <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">🔊 声音: 开</button>
     </div>
 </header>
 
 <main>
     <div class="hud">
         <div class="hud-left">
-            <span class="hud-emoji">��</span>
+            <span class="hud-emoji">🎯</span>
             <span class="hud-label">第 <strong id="roundStat">1</strong> / <span id="totalRounds">5</span> 题</span>
         </div>
         <div class="hud-progress">
             <div class="progress-bar"><i id="progressFill"></i></div>
         </div>
         <div class="hud-right">
-            <span class="hud-emoji">⭐</span>
+            <span class="hud-emoji"></span>
             <span class="hud-label">得分 <strong id="scoreStat">0</strong></span>
             <span class="hud-streak" id="streakBadge"></span>
         </div>
@@ -50,11 +50,11 @@
 
     <div class="stage-panel stage-sunny">
         <div class="stage-emoji-deco">
-            <span>��</span><span>��</span><span>✨</span>
+            <span></span><span></span><span></span>
         </div>
 
         <div class="stage-header">
-            <div class="stage-badge">�� 分一分</div>
+            <div class="stage-badge">🧩 分一分</div>
             <h2 class="stage-question" id="instruction">拖动词到正确的分类里</h2>
             <p class="stage-instruction">把下面的词拖到对应的分类中</p>
         </div>
@@ -77,8 +77,8 @@
         </div>
 
         <div class="hint-row">
-            <button class="hint-btn" id="hintBtn" onclick="toggleHint()">�� 我要看提示</button>
-            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">⏭ 跳过</button>
+            <button class="hint-btn" id="hintBtn" onclick="toggleHint()">💡 我要看提示</button>
+            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">▶▶ 跳过</button>
         </div>
         <div class="hint-text" id="hintText"></div>
         <div class="solution-box" id="solutionBox">
@@ -87,12 +87,12 @@
         </div>
 
         <div class="next-row">
-            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 →</button>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 ▶</button>
         </div>
     </div>
 </main>
 
-<footer>�� 分类小达人 · 拖动词条到对应分类</footer>
+<footer>🧩 分类小达人 · 拖动词条到对应分类</footer>
 
 <script src="./questions.js"></script>
 <script src="./common.js"></script>
@@ -111,7 +111,7 @@ async function init() {
     const diff = getDifficulty();
     questions = shuffleArray([...(bank[GAME_ID]?.[diff] || bank[GAME_ID]?.easy || [])]);
     if (questions.length === 0) {
-        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state">�� 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
+        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state"> 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
         return;
     }
     document.getElementById('totalRounds').textContent = questions.length;
@@ -260,11 +260,11 @@ function checkAnswer() {
         score += 100;
         streak += 1;
         if (streak >= 2) showStreak(streak);
-        document.getElementById('feedback').innerHTML = `<span class="feedback-good">�� 分得对！<small>+100 ⭐</small></span>`;
+        document.getElementById('feedback').innerHTML = `<span class="feedback-good"> 分得对！<small>+100 </small></span>`;
         document.getElementById('solutionBox').classList.add('show');
         playPop();
         spawnConfetti(document.querySelector('.stage-panel'), 25);
-        spawnFloatingEmoji('��', document.querySelector('.stage-panel'));
+        spawnFloatingEmoji('', document.querySelector('.stage-panel'));
         document.getElementById('scoreStat').textContent = score;
         document.getElementById('nextBtn').classList.add('show');
         document.getElementById('hintBtn').disabled = true;
@@ -278,7 +278,7 @@ function checkAnswer() {
         // 失败：允许继续拖动 / 重置 / 再次检查 / 查看答案
         streak = 0;
         const wrongCount = totalPlaced - correctCount;
-        document.getElementById('feedback').innerHTML = `<span class="feedback-bad">�� 还有 ${wrongCount} 个分错了～ 再试试</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="feedback-bad"> 还有 ${wrongCount} 个分错了～ 再试试</span>`;
         // 高亮显示错误放置（红框）和正确放置（绿框）
         cats.forEach((cat, ci) => {
             const correctSet = new Set(cat.words.map(w => w.toLowerCase()));
@@ -321,7 +321,7 @@ function revealAnswer() {
     });
     // 干扰词留在词池
     renderPool();
-    document.getElementById('feedback').innerHTML = `<span class="feedback-good">✨ 已显示正确答案</span>`;
+    document.getElementById('feedback').innerHTML = `<span class="feedback-good"> 已显示正确答案</span>`;
     // 查看答案后禁用自己，但保留重置和继续
     document.getElementById('revealBtn').disabled = true;
     document.getElementById('checkBtn').disabled = true;
@@ -336,7 +336,7 @@ function updateProgress() {
 
 function showStreak(n) {
     const badge = document.getElementById('streakBadge');
-    badge.textContent = `�� 连对 ${n} 题！`;
+    badge.textContent = ` 连对 ${n} 题！`;
     badge.classList.add('show');
     setTimeout(() => badge.classList.remove('show'), 1800);
 }
@@ -347,7 +347,7 @@ function skipQuestion() {
     if (answered) return;
     answered = true;
     streak = 0;
-    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">⏭ 跳过了这题。</span>`;
+    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">▶▶ 跳过了这题。</span>`;
     document.getElementById('solutionBox').classList.add('show');
     document.getElementById('nextBtn').classList.add('show');
     document.getElementById('hintBtn').disabled = true;
@@ -372,21 +372,21 @@ function showResult() {
     const total = questions.length;
     const pct = score / (total * 100);
     let stars, title, msg;
-    if (pct >= 1) { stars = '⭐⭐⭐'; title = '�� 分类大师！'; msg = '你有一双会发现的眼睛！'; }
-    else if (pct >= 0.6) { stars = '⭐⭐☆'; title = '�� 不错！'; msg = '分类越来越好啦～'; }
-    else { stars = '⭐☆☆'; title = '�� 加油！'; msg = '分类需要练习，你行的！'; }
+    if (pct >= 1) { stars = ''; title = ' 🌈 分类大师！'; msg = '你有一双会发现的眼睛！'; }
+    else if (pct >= 0.6) { stars = ''; title = ' 不错！'; msg = '分类越来越好啦～'; }
+    else { stars = ''; title = ' 加油！'; msg = '分类需要练习，你行的！'; }
 
     const panel = document.querySelector('.stage-panel');
     panel.innerHTML = `
         <div class="result-screen">
-            <div class="result-trophy">��</div>
+            <div class="result-trophy">🏆</div>
             <h2>${title}</h2>
             <div class="result-stars">${stars}</div>
             <div class="result-score">${score}<small> / ${total * 100}</small></div>
             <p>${msg}</p>
             <div class="result-actions">
-                <a class="next-btn" href="./game-groups.html">�� 再玩一次</a>
-                <a class="home-btn" href="./index.html">�� 回大厅</a>
+                <a class="next-btn" href="./game-groups.html"> 再玩一次</a>
+                <a class="home-btn" href="./index.html"> 回大厅</a>
             </div>
         </div>
     `;

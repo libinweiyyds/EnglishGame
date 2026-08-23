@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🔎 小侦探 · 破案啦</title>
+    <title>🧩 小侦探 · 破案啦</title>
     <link rel="stylesheet" href="./assets/emoji.css" />
     <link rel="stylesheet" href="./common.css" />
     <link rel="stylesheet" href="./game.css" />
@@ -13,8 +13,8 @@
 <div class="bg-decor">
     <span class="balloon b1">🎈</span>
     <span class="balloon b2">🎈</span>
-    <span class="cloud c1">☁️</span>
-    <span class="cloud c2">☁️</span>
+    <span class="cloud c1">~</span>
+    <span class="cloud c2">~</span>
     <span class="sparkle s1">✨</span>
     <span class="sparkle s2">⭐</span>
     <span class="sparkle s3">✨</span>
@@ -23,11 +23,11 @@
 
 <header class="topbar">
     <div class="logo">
-        <span class="logo-mark">🔎</span>
+        <span class="logo-mark">🧩</span>
         <span class="logo-text">小<em>侦探</em></span>
     </div>
     <div class="topbar-actions">
-        <a class="chip-btn" href="./index.html">← 回到大厅</a>
+        <a class="chip-btn" href="./index.html">◀ 回到大厅</a>
         <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">🔊 声音: 开</button>
     </div>
 </header>
@@ -42,7 +42,7 @@
             <div class="progress-bar"><i id="progressFill"></i></div>
         </div>
         <div class="hud-right">
-            <span class="hud-emoji">⭐</span>
+            <span class="hud-emoji"></span>
             <span class="hud-label">得分 <strong id="scoreStat">0</strong></span>
             <span class="hud-streak" id="streakBadge"></span>
         </div>
@@ -50,7 +50,7 @@
 
     <div class="stage-panel stage-green">
         <div class="stage-emoji-deco">
-            <span>🕵️</span><span>🔍</span><span>📋</span>
+            <span>🕵️</span><span>✨</span><span>✨</span>
         </div>
 
         <div class="stage-header">
@@ -72,7 +72,7 @@
                     <div class="case-question" id="caseQuestion">谁拿了红色的球？</div>
                 </div>
                 <div class="case-section">
-                    <div class="case-section-title">🔍 线索</div>
+                    <div class="case-section-title">📋 线索</div>
                     <div class="case-clues" id="caseClues"></div>
                 </div>
             </div>
@@ -85,21 +85,21 @@
 
         <div class="hint-row">
             <button class="hint-btn" id="hintBtn" onclick="toggleHint()">💡 我要看提示</button>
-            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">⏭️ 跳过</button>
+            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">▶▶ 跳过</button>
         </div>
         <div class="hint-text" id="hintText"></div>
         <div class="solution-box" id="solutionBox">
-            <div class="solution-title">🕵️ 侦探笔记</div>
+            <div class="solution-title">✨️ 侦探笔记</div>
             <div class="solution-content" id="solutionContent"></div>
         </div>
 
         <div class="next-row">
-            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一案 →</button>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一案 ▶</button>
         </div>
     </div>
 </main>
 
-<footer>🔎 小侦探 · 仔细看线索 · 找出真相</footer>
+<footer>🧩 小侦探 · 仔细看线索 · 找出真相</footer>
 
 <script src="./questions.js"></script>
 <script src="./common.js"></script>
@@ -113,7 +113,7 @@ async function init() {
     const diff = getDifficulty();
     questions = shuffleArray([...(bank[GAME_ID]?.[diff] || bank[GAME_ID]?.easy || [])]);
     if (questions.length === 0) {
-        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state">😢 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
+        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state"> 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
         return;
     }
     document.getElementById('totalRounds').textContent = questions.length;
@@ -185,14 +185,14 @@ function choose(btn) {
         btn.classList.add('correct');
         playPop();
         spawnConfetti(document.querySelector('.stage-panel'), 30);
-        spawnFloatingEmoji('🏆', document.querySelector('.stage-panel'));
-        document.getElementById('feedback').innerHTML = `<span class="feedback-good">🎉 破案成功！<small>+100 ⭐</small></span>`;
+        spawnFloatingEmoji('', document.querySelector('.stage-panel'));
+        document.getElementById('feedback').innerHTML = `<span class="feedback-good"> 破案成功！<small>+100 </small></span>`;
         document.getElementById('solutionBox').classList.add('show');
     } else {
         streak = 0;
         btn.classList.add('wrong');
         playError();
-        document.getElementById('feedback').innerHTML = `<span class="feedback-bad">🕵️ 再仔细看线索～</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="feedback-bad">再仔细看线索～</span>`;
     }
     document.getElementById('scoreStat').textContent = score;
     document.getElementById('nextBtn').classList.add('show');
@@ -203,7 +203,7 @@ function choose(btn) {
 
 function showStreak(n) {
     const badge = document.getElementById('streakBadge');
-    badge.textContent = `🔥 连破 ${n} 案！`;
+    badge.textContent = ` 连破 ${n} 案！`;
     badge.classList.add('show');
     setTimeout(() => badge.classList.remove('show'), 1800);
 }
@@ -219,7 +219,7 @@ function skipQuestion() {
         b.disabled = true;
         if (b.dataset.value === correct) b.classList.add('correct');
     });
-    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">⏭️ 跳过本案件。</span>`;
+    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">▶▶ 跳过本案件。</span>`;
     document.getElementById('solutionBox').classList.add('show');
     document.getElementById('nextBtn').classList.add('show');
     document.getElementById('hintBtn').disabled = true;
@@ -233,21 +233,21 @@ function showResult() {
     const total = questions.length;
     const pct = score / (total * 100);
     let stars, title, msg;
-    if (pct >= 1) { stars = '⭐⭐⭐'; title = '🏆 名侦探！'; msg = '你能破解任何谜题！'; }
-    else if (pct >= 0.6) { stars = '⭐⭐☆'; title = '🌟 不错的侦探！'; msg = '再多观察会更厉害～'; }
-    else { stars = '⭐☆☆'; title = '💪 继续努力！'; msg = '下次一定能破更多案件！'; }
+    if (pct >= 1) { stars = ''; title = ' 🕵️ 名侦探！'; msg = '你能破解任何谜题！'; }
+    else if (pct >= 0.6) { stars = ''; title = ' 🔎 不错的侦探！'; msg = '再多观察会更厉害～'; }
+    else { stars = ''; title = ' 💪 继续努力！'; msg = '下次一定能破更多案件！'; }
 
     const panel = document.querySelector('.stage-panel');
     panel.innerHTML = `
         <div class="result-screen">
-            <div class="result-trophy">🕵️</div>
+            <div class="result-trophy">🏆️</div>
             <h2>${title}</h2>
             <div class="result-stars">${stars}</div>
             <div class="result-score">${score}<small> / ${total * 100}</small></div>
             <p>${msg}</p>
             <div class="result-actions">
-                <a class="next-btn" href="./game-detective.html">🔄 再玩一次</a>
-                <a class="home-btn" href="./index.html">🏠 回大厅</a>
+                <a class="next-btn" href="./game-detective.html"> 再玩一次</a>
+                <a class="home-btn" href="./index.html"> 回大厅</a>
             </div>
         </div>
     `;

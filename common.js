@@ -85,8 +85,8 @@ function setDifficultyLocal(diff) {
 
 /* ----- 加载题库 -----
    优先级：window.QUESTION_BANK（来自 questions.js，双击打开即用）
-            → fetch('./questions.json')（HTTP 环境二次校验）
-            → generateFallbackBank()（最后兜底）
+            ▶ fetch('./questions.json')（HTTP 环境二次校验）
+            ▶ generateFallbackBank()（最后兜底）
 */
 async function loadQuestionBank() {
     if (typeof window !== 'undefined' && window.QUESTION_BANK) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🌈 英语脑力乐园 · 选个游戏开始玩吧</title>
+    <title>🧩 英语脑力乐园 · 选个游戏开始玩吧</title>
     <link rel="stylesheet" href="./assets/emoji.css" />
     <link rel="stylesheet" href="./common.css" />
 </head>
@@ -11,24 +11,24 @@
 <div class="bg-decor">
     <span class="balloon b1">🎈</span>
     <span class="balloon b2">🎈</span>
-    <span class="balloon b3">🎈</span>
-    <span class="cloud c1">☁️</span>
-    <span class="cloud c2">☁️</span>
-    <span class="cloud c3">☁️</span>
+    <span class="balloon b3"></span>
+    <span class="cloud c1">~</span>
+    <span class="cloud c2">~</span>
+    <span class="cloud c3">~</span>
     <span class="sparkle s1">✨</span>
     <span class="sparkle s2">⭐</span>
     <span class="sparkle s3">✨</span>
     <span class="sparkle s4">⭐</span>
-    <span class="sparkle s5">✨</span>
+    <span class="sparkle s5"></span>
 </div>
 
 <header class="topbar">
     <div class="logo">
-        <span class="logo-mark">🌟</span>
+        <span class="logo-mark">🧠</span>
         <span class="logo-text">英语<em>脑力乐园</em></span>
     </div>
     <div class="topbar-actions">
-        <button class="chip-btn" onclick="location.href='./help.html'">📖 怎么玩</button>
+        <button class="chip-btn" onclick="location.href='./help.html'"> 怎么玩</button>
         <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">🔊 声音: 开</button>
     </div>
 </header>
@@ -38,13 +38,13 @@
     <section class="welcome">
         <div class="welcome-inner">
             <div class="welcome-text">
-                <span class="welcome-tag">🎉 欢迎来到脑力乐园</span>
+                <span class="welcome-tag">🌟 欢迎来到脑力乐园</span>
                 <h1>嗨，小探险家！<br/>准备好<span class="hl">边玩边学</span>了吗？</h1>
-                <p>六个超级有趣的小游戏，从简单到困难，<br/>每次挑战都能学到新单词和新本领 ✨</p>
+                <p>六个超级有趣的小游戏，从简单到困难，<br/>每次挑战都能学到新单词和新本领 🎈</p>
                 <div class="welcome-stats">
                     <div class="stat-pill"><span>🎮</span><strong id="totalGames">6</strong> 个游戏</div>
-                    <div class="stat-pill"><span>🎯</span><strong>5</strong> 个难度</div>
-                    <div class="stat-pill"><span>⭐</span><strong>1</strong> 个你</div>
+                    <div class="stat-pill"><span>📈</span><strong>5</strong> 个难度</div>
+                    <div class="stat-pill"><span>💖</span><strong>1</strong> 个你</div>
                 </div>
             </div>
             <div class="welcome-mascot" id="mascot">
@@ -57,34 +57,34 @@
     <!-- 难度选择 -->
     <section class="difficulty-section">
         <div class="section-head">
-            <h2><span class="emoji">🎯</span> 选择你的难度</h2>
+            <h2><span class="emoji">🎚️</span> 选择你的难度</h2>
             <span class="current-diff" id="currentDiff">当前：😊 简单</span>
         </div>
         <div class="difficulty-bar" id="difficultyBar">
             <button class="diff-btn active" data-diff="easy">
-                <span class="diff-face">😊</span>
+                <span class="diff-face"></span>
                 <span class="diff-label">简单</span>
-                <span class="diff-stars">★</span>
+                <span class="diff-stars"></span>
             </button>
             <button class="diff-btn" data-diff="light">
-                <span class="diff-face">😌</span>
+                <span class="diff-face"></span>
                 <span class="diff-label">轻松</span>
-                <span class="diff-stars">★★</span>
+                <span class="diff-stars"></span>
             </button>
             <button class="diff-btn" data-diff="medium">
-                <span class="diff-face">😐</span>
+                <span class="diff-face"></span>
                 <span class="diff-label">中等</span>
-                <span class="diff-stars">★★★</span>
+                <span class="diff-stars"></span>
             </button>
             <button class="diff-btn" data-diff="hard">
-                <span class="diff-face">😤</span>
+                <span class="diff-face"></span>
                 <span class="diff-label">困难</span>
-                <span class="diff-stars">★★★★</span>
+                <span class="diff-stars"></span>
             </button>
             <button class="diff-btn" data-diff="nightmare">
-                <span class="diff-face">😈</span>
+                <span class="diff-face"></span>
                 <span class="diff-label">噩梦</span>
-                <span class="diff-stars">★★★★★</span>
+                <span class="diff-stars"></span>
             </button>
         </div>
     </section>
@@ -92,12 +92,12 @@
     <!-- 游戏选择网格 -->
     <section class="games-section">
         <div class="section-head">
-            <h2><span class="emoji">🎪</span> 选择一个游戏开始玩</h2>
+            <h2><span class="emoji">🎯</span> 选择一个游戏开始玩</h2>
             <span class="hint">每个游戏都有自己的小世界哦～</span>
         </div>
         <div id="gameGrid" class="game-grid">
             <div class="loading-card">
-                <span class="spinner">⏳</span>
+                <span class="spinner"></span>
                 <span>正在召唤小精灵…</span>
             </div>
         </div>
@@ -109,7 +109,7 @@
             <span class="footer-emoji">💡</span>
             <div>
                 <h3>小提示</h3>
-                <p>答错了也没关系！看看解释，再来一次，你一定能行！💪</p>
+                <p>答错了也没关系！看看解释，再来一次，你一定能行！</p>
             </div>
         </div>
     </section>
@@ -158,7 +158,7 @@
         },
         detective: {
             name: '小侦探',
-            icon: '🔎',
+            icon: '🕵️',
             desc: '读线索，动脑筋，找出答案！',
             color: 'green',
             tags: ['阅读', '逻辑'],
@@ -191,7 +191,7 @@
     function renderGames() {
         const grid = document.getElementById('gameGrid');
         if (!questionBank) {
-            grid.innerHTML = '<div class="loading-card"><span class="spinner">⏳</span><span>题目小精灵还没到…</span></div>';
+            grid.innerHTML = '<div class="loading-card"><span class="spinner"></span><span>题目小精灵还没到…</span></div>';
             return;
         }
         let html = '';
@@ -201,28 +201,28 @@
             const available = count > 0;
             html += `
                 <article class="game-card color-${meta.color}${available ? '' : ' locked'}">
-                    <div class="game-card-glow"></div>
-                    <div class="game-card-icon">
-                        <span class="game-emoji">${meta.icon}</span>
-                        <span class="game-deco d1">✨</span>
-                        <span class="game-deco d2">⭐</span>
-                        <span class="game-deco d3">💫</span>
+                <div class="game-card-glow"></div>
+                <div class="game-card-icon">
+                    <span class="game-emoji">${meta.icon}</span>
+                    <span class="game-deco d1">✨</span>
+                    <span class="game-deco d2">⭐</span>
+                    <span class="game-deco d3">💫</span>
+                </div>
+                <div class="game-card-body">
+                    <h3>${meta.name}</h3>
+                    <p>${meta.desc}</p>
+                    <div class="game-tags">
+                        ${meta.tags.map(t => `<span class="g-tag">#${t}</span>`).join('')}
                     </div>
-                    <div class="game-card-body">
-                        <h3>${meta.name}</h3>
-                        <p>${meta.desc}</p>
-                        <div class="game-tags">
-                            ${meta.tags.map(t => `<span class="g-tag">#${t}</span>`).join('')}
-                        </div>
-                        <div class="game-meta-row">
-                            <span class="game-count">${available ? `📚 ${count} 道题` : '🚧 暂未开放'}</span>
-                            <span class="game-stars">${available ? '⭐⭐⭐' : '☆☆☆'}</span>
-                        </div>
-                        ${available
-                            ? `<a class="play-btn" href="${meta.file}">开始玩 <span class="arrow">→</span></a>`
-                            : `<button class="play-btn disabled" disabled>暂无题目</button>`}
+                    <div class="game-meta-row">
+                        <span class="game-count">${available ? `🎯 ${count} 道题` : '🔒 暂未开放'}</span>
+                        <span class="game-stars">${available ? '⭐⭐⭐' : ''}</span>
                     </div>
-                </article>
+                    ${available
+                        ? `<a class="play-btn" href="${meta.file}">开始玩 <span class="arrow">▶</span></a>`
+                        : `<button class="play-btn disabled" disabled>暂无题目</button>`}
+                </div>
+            </article>
             `;
         });
         grid.innerHTML = html;
@@ -245,7 +245,7 @@
     function setupMascot() {
         const mascot = document.getElementById('mascot');
         if (!mascot) return;
-        const greetings = ['加油！💪', '你真棒！⭐', '来玩呀～', '选我吧！', '我喜欢学英语！', '一起加油！'];
+        const greetings = ['加油！', '你真棒！', '来玩呀～', '选我吧！', '我喜欢学英语！', '一起加油！'];
         mascot.addEventListener('click', () => {
             const bubble = mascot.querySelector('.mascot-bubble');
             bubble.textContent = greetings[Math.floor(Math.random() * greetings.length)];

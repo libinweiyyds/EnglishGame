@@ -425,11 +425,12 @@ main {
 .color-sunny { border-color: rgba(245, 176, 65, 0.20); }
 
 .game-emoji {
-    font-size: 72px;
+    font-size: 88px;
     position: relative;
     z-index: 2;
     filter: drop-shadow(0 8px 0 rgba(0,0,0,0.10));
     animation: emojiFloat 3s ease-in-out infinite;
+    line-height: 1;
 }
 .game-card:hover .game-emoji { animation: emojiFloat 1.4s ease-in-out infinite; }
 @keyframes emojiFloat {
@@ -440,13 +441,13 @@ main {
 .game-deco {
     position: absolute;
     z-index: 3;
-    font-size: 22px;
-    opacity: 0.85;
+    font-size: 26px;
+    opacity: 0.9;
     animation: spinDeco 8s linear infinite;
 }
-.game-deco.d1 { left: 12px; top: 14px; }
-.game-deco.d2 { right: 14px; top: 18px; animation-delay: -2s; font-size: 18px; }
-.game-deco.d3 { right: 50%; bottom: 18px; animation-delay: -4s; font-size: 16px; }
+.game-deco.d1 { left: 14px; top: 14px; }
+.game-deco.d2 { right: 16px; top: 18px; animation-delay: -2s; font-size: 22px; }
+.game-deco.d3 { right: 50%; bottom: 14px; animation-delay: -4s; font-size: 20px; }
 @keyframes spinDeco {
     0% { transform: rotate(0deg) scale(1); }
     50% { transform: rotate(180deg) scale(1.3); }

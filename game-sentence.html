@@ -11,10 +11,10 @@
 </head>
 <body class="theme-pink">
 <div class="bg-decor">
-    <span class="balloon b1">��</span>
-    <span class="balloon b2">��</span>
-    <span class="cloud c1">☁️</span>
-    <span class="cloud c2">☁️</span>
+    <span class="balloon b1">🎈</span>
+    <span class="balloon b2">🎈</span>
+    <span class="cloud c1">~</span>
+    <span class="cloud c2">~</span>
     <span class="sparkle s1">✨</span>
     <span class="sparkle s2">⭐</span>
     <span class="sparkle s3">✨</span>
@@ -27,22 +27,22 @@
         <span class="logo-text">句子<em>拼拼乐</em></span>
     </div>
     <div class="topbar-actions">
-        <a class="chip-btn" href="./index.html">← 回到大厅</a>
-        <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">�� 声音: 开</button>
+        <a class="chip-btn" href="./index.html">◀ 回到大厅</a>
+        <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">🔊 声音: 开</button>
     </div>
 </header>
 
 <main>
     <div class="hud">
         <div class="hud-left">
-            <span class="hud-emoji">��</span>
+            <span class="hud-emoji">🎯</span>
             <span class="hud-label">第 <strong id="roundStat">1</strong> / <span id="totalRounds">5</span> 题</span>
         </div>
         <div class="hud-progress">
             <div class="progress-bar"><i id="progressFill"></i></div>
         </div>
         <div class="hud-right">
-            <span class="hud-emoji">⭐</span>
+            <span class="hud-emoji"></span>
             <span class="hud-label">得分 <strong id="scoreStat">0</strong></span>
             <span class="hud-streak" id="streakBadge"></span>
         </div>
@@ -50,7 +50,7 @@
 
     <div class="stage-panel stage-pink">
         <div class="stage-emoji-deco">
-            <span>��</span><span>✨</span><span>��</span>
+            <span></span><span></span><span></span>
         </div>
 
         <div class="stage-header">
@@ -77,8 +77,8 @@
         <div class="feedback-line" id="feedback"></div>
 
         <div class="hint-row">
-            <button class="hint-btn" id="hintBtn" onclick="toggleHint()">�� 我要看提示</button>
-            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">⏭ 跳过</button>
+            <button class="hint-btn" id="hintBtn" onclick="toggleHint()">💡 我要看提示</button>
+            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">▶▶ 跳过</button>
         </div>
         <div class="hint-text" id="hintText"></div>
         <div class="solution-box" id="solutionBox">
@@ -87,12 +87,12 @@
         </div>
 
         <div class="next-row">
-            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 →</button>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 ▶</button>
         </div>
     </div>
 </main>
 
-<footer>✍️ 句子拼拼乐 · 点击单词 · 拼成句子</footer>
+<footer> ✍️ 句子拼拼乐 · 点击单词 · 拼成句子</footer>
 
 <script src="./questions.js"></script>
 <script src="./common.js"></script>
@@ -121,7 +121,7 @@ async function init() {
     const diff = getDifficulty();
     questions = shuffleArray([...(bank[GAME_ID]?.[diff] || bank[GAME_ID]?.easy || [])]);
     if (questions.length === 0) {
-        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state">�� 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
+        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state"> 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
         return;
     }
     document.getElementById('totalRounds').textContent = questions.length;
@@ -231,15 +231,15 @@ function submitSentence() {
         score += 100;
         streak += 1;
         if (streak >= 2) showStreak(streak);
-        document.getElementById('feedback').innerHTML = `<span class="feedback-good">�� 完美句子！<small>+100 ⭐</small></span>`;
+        document.getElementById('feedback').innerHTML = `<span class="feedback-good"> 完美句子！<small>+100 </small></span>`;
         document.getElementById('solutionBox').classList.add('show');
         playPop();
         spawnConfetti(document.querySelector('.stage-panel'), 25);
-        spawnFloatingEmoji('��', document.querySelector('.stage-panel'));
+        spawnFloatingEmoji('', document.querySelector('.stage-panel'));
     } else {
         streak = 0;
         playError();
-        document.getElementById('feedback').innerHTML = `<span class="feedback-bad">�� 再读读～</span>`;
+        document.getElementById('feedback').innerHTML = `<span class="feedback-bad"> 再读读～</span>`;
     }
     document.getElementById('scoreStat').textContent = score;
     document.getElementById('nextBtn').classList.add('show');
@@ -269,7 +269,7 @@ function updateProgress() {
 
 function showStreak(n) {
     const badge = document.getElementById('streakBadge');
-    badge.textContent = `�� 连对 ${n} 题！`;
+    badge.textContent = ` 连对 ${n} 题！`;
     badge.classList.add('show');
     setTimeout(() => badge.classList.remove('show'), 1800);
 }
@@ -282,7 +282,7 @@ function skipQuestion() {
     streak = 0;
     answerWords.forEach(item => { poolWords[item.poolIndex].used = false; });
     answerWords = [];
-    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">⏭ 跳过了这题。</span>`;
+    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">▶▶ 跳过了这题。</span>`;
     document.getElementById('solutionBox').classList.add('show');
     document.getElementById('nextBtn').classList.add('show');
     document.getElementById('hintBtn').disabled = true;
@@ -299,21 +299,21 @@ function showResult() {
     const total = questions.length;
     const pct = score / (total * 100);
     let stars, title, msg;
-    if (pct >= 1) { stars = '⭐⭐⭐'; title = '�� 语法大师！'; msg = '你的英语句子棒极了！'; }
-    else if (pct >= 0.6) { stars = '⭐⭐☆'; title = '�� 不错！'; msg = '再多读一些英语会更好～'; }
-    else { stars = '⭐☆☆'; title = '�� 别灰心！'; msg = '句子是慢慢学出来的，加油！'; }
+    if (pct >= 1) { stars = ''; title = ' ✍️ 语法大师！'; msg = '你的英语句子棒极了！'; }
+    else if (pct >= 0.6) { stars = ''; title = ' 不错！'; msg = '再多读一些英语会更好～'; }
+    else { stars = ''; title = ' 💪 别灰心！'; msg = '句子是慢慢学出来的，加油！'; }
 
     const panel = document.querySelector('.stage-panel');
     panel.innerHTML = `
         <div class="result-screen">
-            <div class="result-trophy">��</div>
+            <div class="result-trophy">🏆</div>
             <h2>${title}</h2>
             <div class="result-stars">${stars}</div>
             <div class="result-score">${score}<small> / ${total * 100}</small></div>
             <p>${msg}</p>
             <div class="result-actions">
-                <a class="next-btn" href="./game-sentence.html">�� 再玩一次</a>
-                <a class="home-btn" href="./index.html">�� 回大厅</a>
+                <a class="next-btn" href="./game-sentence.html"> 再玩一次</a>
+                <a class="home-btn" href="./index.html"> 回大厅</a>
             </div>
         </div>
     `;
