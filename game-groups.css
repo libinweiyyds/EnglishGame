@@ -1,0 +1,161 @@
+/* ====================================================================
+   分类小达人 · 拖动玩法专用样式
+   ==================================================================== */
+
+.stage-sunny {
+    background: linear-gradient(180deg, #fffbeb 0%, #fff0c8 100%);
+}
+
+/* ===== 分类容器 ===== */
+.cat-zones {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.cat-zone {
+    background: linear-gradient(135deg, #fff, #fffaf0);
+    border: 3px dashed #f5b041;
+    border-radius: 22px;
+    padding: 14px 18px;
+    min-height: 130px;
+    transition: 0.2s;
+    position: relative;
+}
+.cat-zone.drag-over {
+    background: linear-gradient(135deg, #fff8e1, #fff0c8);
+    border-color: #d49030;
+    border-style: solid;
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(245, 176, 65, 0.25);
+}
+
+.cat-zone-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 2px dashed rgba(245, 176, 65, 0.4);
+}
+.cat-name {
+    font-size: 20px;
+    font-weight: 950;
+    color: #5a3d00;
+    letter-spacing: -0.02em;
+}
+
+.cat-zone-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 40px;
+    align-items: center;
+}
+.zone-placeholder {
+    color: #b88030;
+    font-size: 13px;
+    font-weight: 700;
+    opacity: 0.5;
+}
+
+/* ===== 词池 ===== */
+.word-pool {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff, #fffaf0);
+    border: 3px solid rgba(245, 176, 65, 0.30);
+    border-radius: 20px;
+}
+.pool-label {
+    color: #d49030;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.pool-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 40px;
+}
+
+/* ===== 拖动词条 ===== */
+.draggable-word {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    background: #fff;
+    border: 2px solid #f5b041;
+    color: #5a3d00;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 15px;
+    box-shadow: 0 4px 0 #d49030;
+    cursor: grab;
+    user-select: none;
+    transition: 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: wordIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+@keyframes wordIn {
+    0% { opacity: 0; transform: scale(0.5) translateY(-10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.draggable-word:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 7px 0 #d49030;
+}
+.draggable-word:active { cursor: grabbing; transform: translateY(2px); box-shadow: 0 2px 0 #d49030; }
+.draggable-word.dragging {
+    opacity: 0.4;
+    transform: scale(0.9);
+}
+.draggable-word.in-zone {
+    background: #fff8e1;
+    color: #5a3d00;
+}
+
+/* ===== 动作按钮 ===== */
+.act-btn {
+    padding: 10px 20px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 3px solid;
+}
+.act-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.act-undo {
+    background: #fff;
+    color: #6b5f7a;
+    border-color: #e8e0d8;
+    box-shadow: 0 5px 0 #d0c8c0;
+}
+.act-undo:hover:not(:disabled) { transform: translateY(-3px); background: #fff8f0; }
+.act-undo:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #d0c8c0; }
+
+.act-submit {
+    background: linear-gradient(135deg, #f5b041, #d49030);
+    color: #fff;
+    border-color: #d49030;
+    box-shadow: 0 5px 0 #b06020;
+}
+.act-submit:hover:not(:disabled) { transform: translateY(-3px); }
+.act-submit:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #b06020; }
+
+@media (max-width: 600px) {
+    .cat-zones { grid-template-columns: 1fr; }
+    .draggable-word { padding: 6px 10px; font-size: 13px; }
+    .cat-icon { font-size: 22px; }
+    .cat-name { font-size: 15px; }
+}

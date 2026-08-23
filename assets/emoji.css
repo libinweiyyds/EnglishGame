@@ -1,0 +1,83 @@
+/* ====================================================================
+   Emoji 字体 · Noto Color Emoji
+   让所有 emoji 在 Windows 浏览器上正常彩色显示
+   ==================================================================== */
+
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/noto-color-emoji-0.woff2') format('woff2');
+    unicode-range:
+        U+0000-00FF,        /* 基本拉丁 / 拉丁-1 补充（错位映射 emoji 子集 0） */
+        U+2000-206F,        /* 常用标点 */
+        U+2300-23FF,        /* 杂项技术符号 */
+        U+2700-27BF,        /* 装饰符号 */
+        U+2900-297F,        /* 补充箭头-B */
+        U+E000-F8FF,        /* 私有使用区 */
+        U+FE0F;             /* 变体选择器-16 */
+}
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/noto-color-emoji-1.woff2') format('woff2');
+    unicode-range: U+1F100-1F1FF; /* 封闭式字母数字补充 */
+}
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/noto-color-emoji-2.woff2') format('woff2');
+    unicode-range: U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F1FF, U+1F200-1F2FF;
+}
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/noto-color-emoji-3.woff2') format('woff2');
+    unicode-range: U+1F300-1F5FF;
+}
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/noto-color-emoji-4.woff2') format('woff2');
+    unicode-range: U+1F600-1F64F;
+}
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/noto-color-emoji-5.woff2') format('woff2');
+    unicode-range: U+1F650-1F67F, U+1F680-1F6FF;
+}
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/noto-color-emoji-6.woff2') format('woff2');
+    unicode-range: U+1F700-1F77F, U+1F780-1F7FF, U+1F800-1F8FF;
+}
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./fonts/noto-color-emoji-7.woff2') format('woff2');
+    unicode-range: U+1F900-1F9FF, U+1FA00-1FA6F, U+1FA70-1FAFF, U+2600-26FF;
+}
+
+/* 全局：emoji 字体放在字体栈首，让浏览器优先用本地 Noto Color Emoji 渲染 emoji */
+html, body, button, input, select, textarea {
+    font-family: 'Noto Color Emoji', 'Segoe UI Emoji', 'Apple Color Emoji',
+                 'Comic Sans MS', 'Chalkboard SE', 'Quicksand',
+                 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+}

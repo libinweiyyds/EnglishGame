@@ -1,0 +1,150 @@
+/* ====================================================================
+   句子拼拼乐 · 专用样式
+   ==================================================================== */
+
+.stage-pink {
+    background: linear-gradient(180deg, #fff5fa 0%, #ffd6e8 100%);
+}
+
+/* ===== 答案区 ===== */
+.sentence-answer {
+    position: relative;
+    z-index: 1;
+    min-height: 90px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #fff, #fff8fc);
+    border: 4px dashed #f5a0b8;
+    border-radius: 24px;
+    box-shadow: inset 0 4px 12px rgba(245, 160, 184, 0.10);
+}
+.answer-placeholder {
+    color: #d97a96;
+    font-size: 16px;
+    font-weight: 700;
+    opacity: 0.7;
+}
+.answer-token {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    background: var(--bg);
+    border: 3px solid var(--bd);
+    color: #1f2a3f;
+    border-radius: 14px;
+    font-weight: 900;
+    font-size: 17px;
+    box-shadow: 0 4px 0 var(--sh);
+    cursor: pointer;
+    transition: 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: tokenIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.answer-token:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 7px 0 var(--sh);
+}
+.answer-token:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--sh); }
+@keyframes tokenIn {
+    0% { opacity: 0; transform: scale(0.5) translateY(-10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ===== 操作按钮 ===== */
+.sentence-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.act-btn {
+    padding: 10px 20px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 3px solid;
+}
+.act-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.act-undo {
+    background: #fff;
+    color: #6b5f7a;
+    border-color: #e8e0d8;
+    box-shadow: 0 5px 0 #d0c8c0;
+}
+.act-undo:hover:not(:disabled) { transform: translateY(-3px); background: #fff8f0; }
+.act-undo:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #d0c8c0; }
+
+.act-clear {
+    background: #fff;
+    color: #d97a96;
+    border-color: #f5a0b8;
+    box-shadow: 0 5px 0 #d97a96;
+}
+.act-clear:hover:not(:disabled) { transform: translateY(-3px); background: #fff0f5; }
+.act-clear:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #d97a96; }
+
+.act-submit {
+    background: linear-gradient(135deg, #f5a0b8, #d97a96);
+    color: #fff;
+    border-color: #d97a96;
+    box-shadow: 0 5px 0 #b85a76;
+}
+.act-submit:hover:not(:disabled) { transform: translateY(-3px); }
+.act-submit:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #b85a76; }
+
+/* ===== 词池 ===== */
+.word-pool {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #fff, #fff8fc);
+    border: 3px solid rgba(245, 160, 184, 0.30);
+    border-radius: 24px;
+    min-height: 90px;
+}
+.word-token {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    background: var(--bg);
+    border: 3px solid var(--bd);
+    color: #1f2a3f;
+    border-radius: 14px;
+    font-weight: 900;
+    font-size: 17px;
+    box-shadow: 0 5px 0 var(--sh);
+    cursor: pointer;
+    transition: 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: tokenIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+.word-token:hover:not(:disabled) {
+    transform: translateY(-4px) rotate(-2deg) scale(1.06);
+    box-shadow: 0 9px 0 var(--sh);
+}
+.word-token:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--sh); }
+.word-token.used, .word-token:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    transform: scale(0.9);
+    box-shadow: 0 2px 0 var(--sh);
+}
+
+@media (max-width: 600px) {
+    .sentence-answer, .word-pool { padding: 10px 12px; min-height: 60px; }
+    .word-token, .answer-token { padding: 8px 14px; font-size: 15px; }
+    .act-btn { padding: 8px 14px; font-size: 13px; }
+}

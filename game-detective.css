@@ -1,0 +1,143 @@
+/* ====================================================================
+   小侦探 · 专用样式
+   ==================================================================== */
+
+.stage-green {
+    background: linear-gradient(180deg, #f0faf6 0%, #c8e8dc 100%);
+}
+
+/* ===== Case File ===== */
+.case-file {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 24px;
+    background: linear-gradient(180deg, #fffbf0 0%, #fff5e0 100%);
+    border-radius: 20px 20px 24px 24px;
+    box-shadow: 0 10px 0 #5fa88e, 0 16px 32px rgba(95, 168, 142, 0.20);
+    border: 4px solid #5fa88e;
+    overflow: hidden;
+    animation: caseIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes caseIn {
+    0% { opacity: 0; transform: translateY(-20px) rotate(-1deg); }
+    100% { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+/* 文件夹的"耳朵" */
+.case-file-tab {
+    position: relative;
+    height: 26px;
+    background: linear-gradient(180deg, #5fa88e, #4a8b73);
+    border-bottom: 4px solid #3a7e66;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 8px;
+}
+.case-file-pin {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ff9a76, #e07a55);
+    box-shadow: 0 2px 0 #b85a30, inset 0 -2px 4px rgba(0,0,0,0.20);
+    flex: 0 0 auto;
+}
+.case-file-pin.pin2 {
+    background: radial-gradient(circle at 30% 30%, #ffd93d, #d49030);
+    box-shadow: 0 2px 0 #a06a10, inset 0 -2px 4px rgba(0,0,0,0.20);
+}
+.case-file-stamp {
+    margin-left: auto;
+    background: #d63031;
+    color: #fff;
+    padding: 3px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.15em;
+    box-shadow: 0 2px 0 #a02020;
+    transform: rotate(-3deg);
+}
+
+.case-file-body { padding: 18px 22px 22px; }
+
+.case-section { margin-bottom: 14px; }
+.case-section:last-child { margin-bottom: 0; }
+.case-section-title {
+    font-size: 12px;
+    font-weight: 950;
+    color: #2a7a5a;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: inline-block;
+    background: #d6efe2;
+    padding: 3px 12px;
+    border-radius: 40px;
+    border: 2px solid #5fa88e;
+}
+
+.case-question {
+    font-size: 20px;
+    font-weight: 950;
+    color: #1f2a3f;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.case-clues {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.clue-card {
+    background: linear-gradient(135deg, #fff, #f5faf7);
+    border: 3px solid #ccebd9;
+    border-radius: 14px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d4a3a;
+    line-height: 1.5;
+    box-shadow: 0 3px 0 #ccebd9;
+    animation: clueIn 0.4s ease backwards;
+}
+.clue-num {
+    background: #5fa88e;
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 950;
+    font-size: 13px;
+    flex: 0 0 auto;
+}
+.clue-text { flex: 1; }
+@keyframes clueIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* ===== Suspect Options ===== */
+.suspect-tile {
+    background: linear-gradient(135deg, #fff, #f0faf6);
+    border-color: #ccebd9;
+    box-shadow: 0 5px 0 #ccebd9;
+}
+.suspect-tile:hover:not(:disabled) {
+    background: linear-gradient(135deg, #eafff3, #fff);
+    border-color: #5fa88e;
+    box-shadow: 0 9px 0 #5fa88e;
+}
+
+@media (max-width: 600px) {
+    .case-question { font-size: 17px; }
+    .clue-card { font-size: 13px; padding: 8px 12px; }
+    .clue-num { width: 22px; height: 22px; font-size: 11px; }
+}

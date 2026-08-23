@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>✍️ 句子拼拼乐 · 排句子</title>
+    <link rel="stylesheet" href="./assets/emoji.css" />
+    <link rel="stylesheet" href="./common.css" />
+    <link rel="stylesheet" href="./game.css" />
+    <link rel="stylesheet" href="./game-sentence.css" />
+</head>
+<body class="theme-pink">
+<div class="bg-decor">
+    <span class="balloon b1">��</span>
+    <span class="balloon b2">��</span>
+    <span class="cloud c1">☁️</span>
+    <span class="cloud c2">☁️</span>
+    <span class="sparkle s1">✨</span>
+    <span class="sparkle s2">⭐</span>
+    <span class="sparkle s3">✨</span>
+    <span class="sparkle s4">⭐</span>
+</div>
+
+<header class="topbar">
+    <div class="logo">
+        <span class="logo-mark">✍️</span>
+        <span class="logo-text">句子<em>拼拼乐</em></span>
+    </div>
+    <div class="topbar-actions">
+        <a class="chip-btn" href="./index.html">← 回到大厅</a>
+        <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">�� 声音: 开</button>
+    </div>
+</header>
+
+<main>
+    <div class="hud">
+        <div class="hud-left">
+            <span class="hud-emoji">��</span>
+            <span class="hud-label">第 <strong id="roundStat">1</strong> / <span id="totalRounds">5</span> 题</span>
+        </div>
+        <div class="hud-progress">
+            <div class="progress-bar"><i id="progressFill"></i></div>
+        </div>
+        <div class="hud-right">
+            <span class="hud-emoji">⭐</span>
+            <span class="hud-label">得分 <strong id="scoreStat">0</strong></span>
+            <span class="hud-streak" id="streakBadge"></span>
+        </div>
+    </div>
+
+    <div class="stage-panel stage-pink">
+        <div class="stage-emoji-deco">
+            <span>��</span><span>✨</span><span>��</span>
+        </div>
+
+        <div class="stage-header">
+            <div class="stage-badge">✍️ 拼句子</div>
+            <h2 class="stage-question" id="instruction">把下面打乱的单词排成正确的句子</h2>
+            <p class="stage-instruction">点击上面词池里的单词，加到下面的句子栏里</p>
+        </div>
+
+        <!-- 答案区（用户拼成的句子）-->
+        <div class="sentence-answer" id="sentenceAnswer">
+            <span class="answer-placeholder">点上面的单词开始拼句子～</span>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="sentence-actions">
+            <button class="act-btn act-undo" id="undoBtn" onclick="undoWord()" disabled>撤销</button>
+            <button class="act-btn act-clear" id="clearBtn" onclick="clearAnswer()" disabled>清空</button>
+            <button class="act-btn act-submit" id="submitBtn" onclick="submitSentence()" disabled>确认</button>
+        </div>
+
+        <!-- 词池（打乱的单词）-->
+        <div class="word-pool" id="wordPool"></div>
+
+        <div class="feedback-line" id="feedback"></div>
+
+        <div class="hint-row">
+            <button class="hint-btn" id="hintBtn" onclick="toggleHint()">�� 我要看提示</button>
+            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">⏭ 跳过</button>
+        </div>
+        <div class="hint-text" id="hintText"></div>
+        <div class="solution-box" id="solutionBox">
+            <div class="solution-title">✨ 小知识</div>
+            <div class="solution-content" id="solutionContent"></div>
+        </div>
+
+        <div class="next-row">
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 →</button>
+        </div>
+    </div>
+</main>
+
+<footer>✍️ 句子拼拼乐 · 点击单词 · 拼成句子</footer>
+
+<script src="./questions.js"></script>
+<script src="./common.js"></script>
+<script>
+const GAME_ID = 'sentence';
+let questions = [];
+let roundIndex = 0, score = 0, streak = 0, answered = false;
+let poolWords = [];        // 词池 [{word, used}]
+let answerWords = [];      // 已组成的句子 [{word, poolIndex}]
+
+const WORD_COLORS = [
+    { bg: '#ffd6e8', border: '#f5a0b8', shadow: '#d97a96' },
+    { bg: '#d6f5ff', border: '#48dbfb', shadow: '#1eb8de' },
+    { bg: '#fff8d6', border: '#feca57', shadow: '#d49030' },
+    { bg: '#d6ffe2', border: '#55c7a6', shadow: '#3da386' },
+    { bg: '#e8d6ff', border: '#a29bfe', shadow: '#7c6bc4' },
+    { bg: '#ffd6d6', border: '#ff9a76', shadow: '#e07a55' },
+    { bg: '#fff0d6', border: '#f7d794', shadow: '#d49030' },
+    { bg: '#d6e8ff', border: '#74b9ff', shadow: '#5a48a8' }
+];
+
+function colorFor(i) { return WORD_COLORS[i % WORD_COLORS.length]; }
+
+async function init() {
+    const bank = await loadQuestionBank();
+    const diff = getDifficulty();
+    questions = shuffleArray([...(bank[GAME_ID]?.[diff] || bank[GAME_ID]?.easy || [])]);
+    if (questions.length === 0) {
+        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state">�� 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
+        return;
+    }
+    document.getElementById('totalRounds').textContent = questions.length;
+    renderQuestion();
+}
+
+function renderQuestion() {
+    if (roundIndex >= questions.length) { showResult(); return; }
+    answered = false;
+    answerWords = [];
+    document.getElementById('roundStat').textContent = roundIndex + 1;
+    document.getElementById('scoreStat').textContent = score;
+    document.getElementById('feedback').innerHTML = '';
+    document.getElementById('hintText').classList.remove('show');
+    document.getElementById('solutionBox').classList.remove('show');
+    document.getElementById('nextBtn').classList.remove('show');
+    document.getElementById('hintBtn').disabled = false;
+    document.getElementById('skipBtn').disabled = false;
+
+    const q = questions[roundIndex];
+    document.getElementById('instruction').textContent = q.instruction || '把打乱的单词排成正确的句子';
+    document.getElementById('hintText').textContent = getHintByGame(GAME_ID);
+    document.getElementById('solutionContent').textContent = q.extra || '';
+
+    // 解析打乱的单词
+    const words = (q.question || '').split('/').map(s => s.trim()).filter(Boolean);
+    // 加随机顺序
+    poolWords = shuffleArray(words.map((w, i) => ({ word: w, used: false })));
+
+    renderPool();
+    renderAnswer();
+    updateActionButtons();
+    updateProgress();
+}
+
+function renderPool() {
+    const pool = document.getElementById('wordPool');
+    pool.innerHTML = poolWords.map((item, i) => {
+        const c = colorFor(i);
+        const disabled = item.used ? 'disabled' : '';
+        return `<button class="word-token ${item.used ? 'used' : ''}" data-index="${i}" onclick="pickWord(${i})" ${disabled} style="--bg:${c.bg};--bd:${c.border};--sh:${c.shadow};">${escapeHtml(item.word)}</button>`;
+    }).join('');
+}
+
+function renderAnswer() {
+    const ans = document.getElementById('sentenceAnswer');
+    if (answerWords.length === 0) {
+        ans.innerHTML = '<span class="answer-placeholder">点上面的单词开始拼句子～</span>';
+    } else {
+        ans.innerHTML = answerWords.map((item, i) => {
+            const c = colorFor(item.poolIndex);
+            return `<button class="answer-token" data-index="${i}" onclick="returnWord(${i})" style="--bg:${c.bg};--bd:${c.border};--sh:${c.shadow};">${escapeHtml(item.word)}</button>`;
+        }).join('');
+    }
+}
+
+function pickWord(poolIndex) {
+    if (answered) return;
+    const item = poolWords[poolIndex];
+    if (!item || item.used) return;
+    item.used = true;
+    answerWords.push({ word: item.word, poolIndex });
+    renderPool();
+    renderAnswer();
+    updateActionButtons();
+    playPop();
+}
+
+function returnWord(answerIndex) {
+    if (answered) return;
+    const item = answerWords[answerIndex];
+    if (!item) return;
+    poolWords[item.poolIndex].used = false;
+    answerWords.splice(answerIndex, 1);
+    renderPool();
+    renderAnswer();
+    updateActionButtons();
+    playPop();
+}
+
+function undoWord() {
+    if (answered || answerWords.length === 0) return;
+    returnWord(answerWords.length - 1);
+}
+
+function clearAnswer() {
+    if (answered) return;
+    // 把所有 answerWords 退回 pool
+    answerWords.forEach(item => { poolWords[item.poolIndex].used = false; });
+    answerWords = [];
+    renderPool();
+    renderAnswer();
+    updateActionButtons();
+    playPop();
+}
+
+function submitSentence() {
+    if (answered || answerWords.length === 0) return;
+    answered = true;
+
+    const userAnswer = answerWords.map(a => a.word).join(' ');
+    const correct = (questions[roundIndex].answer || '').replace(/[.!?]$/, '').trim().toLowerCase();
+    const userNorm = userAnswer.replace(/[.!?]$/, '').trim().toLowerCase();
+    const ok = userNorm === correct;
+
+    if (ok) {
+        score += 100;
+        streak += 1;
+        if (streak >= 2) showStreak(streak);
+        document.getElementById('feedback').innerHTML = `<span class="feedback-good">�� 完美句子！<small>+100 ⭐</small></span>`;
+        document.getElementById('solutionBox').classList.add('show');
+        playPop();
+        spawnConfetti(document.querySelector('.stage-panel'), 25);
+        spawnFloatingEmoji('��', document.querySelector('.stage-panel'));
+    } else {
+        streak = 0;
+        playError();
+        document.getElementById('feedback').innerHTML = `<span class="feedback-bad">�� 再读读～</span>`;
+    }
+    document.getElementById('scoreStat').textContent = score;
+    document.getElementById('nextBtn').classList.add('show');
+    document.getElementById('hintBtn').disabled = true;
+    document.getElementById('skipBtn').disabled = true;
+
+    // 禁用所有按钮
+    document.getElementById('undoBtn').disabled = true;
+    document.getElementById('clearBtn').disabled = true;
+    document.getElementById('submitBtn').disabled = true;
+    document.querySelectorAll('.word-token, .answer-token').forEach(b => b.disabled = true);
+
+    updateProgress();
+}
+
+function updateActionButtons() {
+    const hasWords = answerWords.length > 0;
+    document.getElementById('undoBtn').disabled = !hasWords || answered;
+    document.getElementById('clearBtn').disabled = !hasWords || answered;
+    document.getElementById('submitBtn').disabled = !hasWords || answered;
+}
+
+function updateProgress() {
+    const pct = (roundIndex / questions.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function showStreak(n) {
+    const badge = document.getElementById('streakBadge');
+    badge.textContent = `�� 连对 ${n} 题！`;
+    badge.classList.add('show');
+    setTimeout(() => badge.classList.remove('show'), 1800);
+}
+
+function toggleHint() { document.getElementById('hintText').classList.toggle('show'); }
+
+function skipQuestion() {
+    if (answered) return;
+    answered = true;
+    streak = 0;
+    answerWords.forEach(item => { poolWords[item.poolIndex].used = false; });
+    answerWords = [];
+    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">⏭ 跳过了这题。</span>`;
+    document.getElementById('solutionBox').classList.add('show');
+    document.getElementById('nextBtn').classList.add('show');
+    document.getElementById('hintBtn').disabled = true;
+    document.getElementById('skipBtn').disabled = true;
+    document.getElementById('undoBtn').disabled = true;
+    document.getElementById('clearBtn').disabled = true;
+    document.getElementById('submitBtn').disabled = true;
+    playPop();
+}
+
+function nextQuestion() { roundIndex++; renderQuestion(); }
+
+function showResult() {
+    const total = questions.length;
+    const pct = score / (total * 100);
+    let stars, title, msg;
+    if (pct >= 1) { stars = '⭐⭐⭐'; title = '�� 语法大师！'; msg = '你的英语句子棒极了！'; }
+    else if (pct >= 0.6) { stars = '⭐⭐☆'; title = '�� 不错！'; msg = '再多读一些英语会更好～'; }
+    else { stars = '⭐☆☆'; title = '�� 别灰心！'; msg = '句子是慢慢学出来的，加油！'; }
+
+    const panel = document.querySelector('.stage-panel');
+    panel.innerHTML = `
+        <div class="result-screen">
+            <div class="result-trophy">��</div>
+            <h2>${title}</h2>
+            <div class="result-stars">${stars}</div>
+            <div class="result-score">${score}<small> / ${total * 100}</small></div>
+            <p>${msg}</p>
+            <div class="result-actions">
+                <a class="next-btn" href="./game-sentence.html">�� 再玩一次</a>
+                <a class="home-btn" href="./index.html">�� 回大厅</a>
+            </div>
+        </div>
+    `;
+    playWin();
+    spawnConfetti(panel, 60);
+}
+
+init();
+</script>
+</body

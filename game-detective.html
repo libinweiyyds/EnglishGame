@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔎 小侦探 · 破案啦</title>
+    <link rel="stylesheet" href="./assets/emoji.css" />
+    <link rel="stylesheet" href="./common.css" />
+    <link rel="stylesheet" href="./game.css" />
+    <link rel="stylesheet" href="./game-detective.css" />
+</head>
+<body class="theme-green">
+<div class="bg-decor">
+    <span class="balloon b1">🎈</span>
+    <span class="balloon b2">🎈</span>
+    <span class="cloud c1">☁️</span>
+    <span class="cloud c2">☁️</span>
+    <span class="sparkle s1">✨</span>
+    <span class="sparkle s2">⭐</span>
+    <span class="sparkle s3">✨</span>
+    <span class="sparkle s4">⭐</span>
+</div>
+
+<header class="topbar">
+    <div class="logo">
+        <span class="logo-mark">🔎</span>
+        <span class="logo-text">小<em>侦探</em></span>
+    </div>
+    <div class="topbar-actions">
+        <a class="chip-btn" href="./index.html">← 回到大厅</a>
+        <button class="chip-btn sound-btn" id="soundBtn" onclick="toggleSound()">🔊 声音: 开</button>
+    </div>
+</header>
+
+<main>
+    <div class="hud">
+        <div class="hud-left">
+            <span class="hud-emoji">🎯</span>
+            <span class="hud-label">第 <strong id="roundStat">1</strong> / <span id="totalRounds">5</span> 题</span>
+        </div>
+        <div class="hud-progress">
+            <div class="progress-bar"><i id="progressFill"></i></div>
+        </div>
+        <div class="hud-right">
+            <span class="hud-emoji">⭐</span>
+            <span class="hud-label">得分 <strong id="scoreStat">0</strong></span>
+            <span class="hud-streak" id="streakBadge"></span>
+        </div>
+    </div>
+
+    <div class="stage-panel stage-green">
+        <div class="stage-emoji-deco">
+            <span>🕵️</span><span>🔍</span><span>📋</span>
+        </div>
+
+        <div class="stage-header">
+            <div class="stage-badge">🕵️ 案件 #<span id="caseNo">1</span></div>
+            <h2 class="stage-question" id="caseTitle">谁拿了红球？</h2>
+            <p class="stage-instruction">仔细看每一条线索，找出真相！</p>
+        </div>
+
+        <!-- 案件档案 -->
+        <div class="case-file">
+            <div class="case-file-tab">
+                <span class="case-file-pin"></span>
+                <span class="case-file-pin pin2"></span>
+                <span class="case-file-stamp">机密</span>
+            </div>
+            <div class="case-file-body">
+                <div class="case-section">
+                    <div class="case-section-title">📋 案件描述</div>
+                    <div class="case-question" id="caseQuestion">谁拿了红色的球？</div>
+                </div>
+                <div class="case-section">
+                    <div class="case-section-title">🔍 线索</div>
+                    <div class="case-clues" id="caseClues"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 选项 -->
+        <div class="options-grid" id="optionsGrid"></div>
+
+        <div class="feedback-line" id="feedback"></div>
+
+        <div class="hint-row">
+            <button class="hint-btn" id="hintBtn" onclick="toggleHint()">💡 我要看提示</button>
+            <button class="skip-btn" id="skipBtn" onclick="skipQuestion()">⏭️ 跳过</button>
+        </div>
+        <div class="hint-text" id="hintText"></div>
+        <div class="solution-box" id="solutionBox">
+            <div class="solution-title">🕵️ 侦探笔记</div>
+            <div class="solution-content" id="solutionContent"></div>
+        </div>
+
+        <div class="next-row">
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一案 →</button>
+        </div>
+    </div>
+</main>
+
+<footer>🔎 小侦探 · 仔细看线索 · 找出真相</footer>
+
+<script src="./questions.js"></script>
+<script src="./common.js"></script>
+<script>
+const GAME_ID = 'detective';
+let questions = [];
+let roundIndex = 0, score = 0, streak = 0, answered = false;
+
+async function init() {
+    const bank = await loadQuestionBank();
+    const diff = getDifficulty();
+    questions = shuffleArray([...(bank[GAME_ID]?.[diff] || bank[GAME_ID]?.easy || [])]);
+    if (questions.length === 0) {
+        document.querySelector('.stage-panel').innerHTML = '<div class="empty-state">😢 这个难度还没有题目，换一个试试吧！<br/><a class="chip-btn" style="display:inline-block;margin-top:16px;" href="./index.html">返回大厅</a></div>';
+        return;
+    }
+    document.getElementById('totalRounds').textContent = questions.length;
+    renderQuestion();
+}
+
+function renderQuestion() {
+    if (roundIndex >= questions.length) { showResult(); return; }
+    answered = false;
+    document.getElementById('roundStat').textContent = roundIndex + 1;
+    document.getElementById('scoreStat').textContent = score;
+    document.getElementById('caseNo').textContent = roundIndex + 1;
+    document.getElementById('feedback').innerHTML = '';
+    document.getElementById('hintText').classList.remove('show');
+    document.getElementById('solutionBox').classList.remove('show');
+    document.getElementById('nextBtn').classList.remove('show');
+    document.getElementById('hintBtn').disabled = false;
+    document.getElementById('skipBtn').disabled = false;
+
+    const q = questions[roundIndex];
+    document.getElementById('caseTitle').textContent = q.title || '神秘案件';
+    document.getElementById('caseQuestion').textContent = q.title || '谁是真凶？';
+    document.getElementById('hintText').textContent = getHintByGame(GAME_ID);
+    document.getElementById('solutionContent').textContent = q.extra || '';
+
+    // 线索
+    const clues = q.clues || [];
+    const cluesEl = document.getElementById('caseClues');
+    cluesEl.innerHTML = clues.map((c, i) => `
+        <div class="clue-card" style="animation-delay:${i * 0.1}s">
+            <span class="clue-num">${i + 1}</span>
+            <span class="clue-text">${escapeHtml(c)}</span>
+        </div>
+    `).join('');
+
+    // 选项
+    const grid = document.getElementById('optionsGrid');
+    grid.innerHTML = q.options.map((opt, i) => {
+        return `
+            <button class="option-tile suspect-tile" data-value="${escapeHtml(opt)}" onclick="choose(this)">
+                <span class="option-text">${escapeHtml(opt)}</span>
+            </button>`;
+    }).join('');
+
+    updateProgress();
+}
+
+function updateProgress() {
+    const pct = (roundIndex / questions.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function choose(btn) {
+    if (answered) return;
+    answered = true;
+    const value = btn.dataset.value;
+    const correct = questions[roundIndex].answer;
+
+    document.querySelectorAll('.option-tile').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.value === correct) b.classList.add('correct');
+    });
+
+    const ok = value === correct;
+    if (ok) {
+        score += 100;
+        streak += 1;
+        if (streak >= 2) showStreak(streak);
+        btn.classList.add('correct');
+        playPop();
+        spawnConfetti(document.querySelector('.stage-panel'), 30);
+        spawnFloatingEmoji('🏆', document.querySelector('.stage-panel'));
+        document.getElementById('feedback').innerHTML = `<span class="feedback-good">🎉 破案成功！<small>+100 ⭐</small></span>`;
+        document.getElementById('solutionBox').classList.add('show');
+    } else {
+        streak = 0;
+        btn.classList.add('wrong');
+        playError();
+        document.getElementById('feedback').innerHTML = `<span class="feedback-bad">🕵️ 再仔细看线索～</span>`;
+    }
+    document.getElementById('scoreStat').textContent = score;
+    document.getElementById('nextBtn').classList.add('show');
+    document.getElementById('hintBtn').disabled = true;
+    document.getElementById('skipBtn').disabled = true;
+    updateProgress();
+}
+
+function showStreak(n) {
+    const badge = document.getElementById('streakBadge');
+    badge.textContent = `🔥 连破 ${n} 案！`;
+    badge.classList.add('show');
+    setTimeout(() => badge.classList.remove('show'), 1800);
+}
+
+function toggleHint() { document.getElementById('hintText').classList.toggle('show'); }
+
+function skipQuestion() {
+    if (answered) return;
+    answered = true;
+    streak = 0;
+    const correct = questions[roundIndex].answer;
+    document.querySelectorAll('.option-tile').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.value === correct) b.classList.add('correct');
+    });
+    document.getElementById('feedback').innerHTML = `<span class="feedback-bad">⏭️ 跳过本案件。</span>`;
+    document.getElementById('solutionBox').classList.add('show');
+    document.getElementById('nextBtn').classList.add('show');
+    document.getElementById('hintBtn').disabled = true;
+    document.getElementById('skipBtn').disabled = true;
+    playPop();
+}
+
+function nextQuestion() { roundIndex++; renderQuestion(); }
+
+function showResult() {
+    const total = questions.length;
+    const pct = score / (total * 100);
+    let stars, title, msg;
+    if (pct >= 1) { stars = '⭐⭐⭐'; title = '🏆 名侦探！'; msg = '你能破解任何谜题！'; }
+    else if (pct >= 0.6) { stars = '⭐⭐☆'; title = '🌟 不错的侦探！'; msg = '再多观察会更厉害～'; }
+    else { stars = '⭐☆☆'; title = '💪 继续努力！'; msg = '下次一定能破更多案件！'; }
+
+    const panel = document.querySelector('.stage-panel');
+    panel.innerHTML = `
+        <div class="result-screen">
+            <div class="result-trophy">🕵️</div>
+            <h2>${title}</h2>
+            <div class="result-stars">${stars}</div>
+            <div class="result-score">${score}<small> / ${total * 100}</small></div>
+            <p>${msg}</p>
+            <div class="result-actions">
+                <a class="next-btn" href="./game-detective.html">🔄 再玩一次</a>
+                <a class="home-btn" href="./index.html">🏠 回大厅</a>
+            </div>
+        </div>
+    `;
+    playWin();
+    spawnConfetti(panel, 60);
+}
+
+init();
+</script>
+</body>
+</html>
