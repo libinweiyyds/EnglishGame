@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔧 题库管理 · 英语脑力乐园</title>
+    <link rel="stylesheet" href="./assets/emoji.css" />
+    <link rel="stylesheet" href="./common.css" />
+    <link rel="stylesheet" href="./admin.css" />
+</head>
+<body class="admin-body">
+<header class="admin-topbar">
+    <div class="admin-logo">
+        <span class="logo-mark">🔧</span>
+        <span class="logo-text">题库<em>管理</em></span>
+    </div>
+    <div class="admin-actions">
+        <button class="admin-btn btn-ghost" onclick="location.href='./index.html'">◀ 返回大厅</button>
+        <button class="admin-btn btn-danger" onclick="resetToDefault()">🗑 恢复默认题库</button>
+    </div>
+</header>
+
+<main class="admin-main">
+    <!-- 统计面板 -->
+    <section class="stats-bar">
+        <div class="stat-card">
+            <span class="stat-icon">📦</span>
+            <div class="stat-info">
+                <div class="stat-value" id="totalStats">0</div>
+                <div class="stat-label">总题目数</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">🎮</span>
+            <div class="stat-info">
+                <div class="stat-value" id="gameStats">0</div>
+                <div class="stat-label">游戏类型</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-icon">💾</span>
+            <div class="stat-info">
+                <div class="stat-value" id="storageStats">本地</div>
+                <div class="stat-label">存储位置</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据操作区 -->
+    <section class="data-ops">
+        <div class="ops-card">
+            <h3>📤 数据导出</h3>
+            <p class="ops-desc">将当前所有题目导出为 JSON 文件，可作为备份或迁移到其他设备。</p>
+            <button class="admin-btn btn-primary" onclick="exportBank()">⬇ 导出题库 JSON</button>
+        </div>
+        <div class="ops-card">
+            <h3>📥 数据导入</h3>
+            <p class="ops-desc">从 JSON 文件恢复题库（会覆盖当前所有题目）。</p>
+            <div class="ops-row">
+                <input type="file" id="importFile" accept=".json,application/json" style="display:none" />
+                <button class="admin-btn btn-primary" onclick="document.getElementById('importFile').click()">⬆ 导入题库 JSON</button>
+            </div>
+        </div>
+        <div class="ops-card">
+            <h3>🔄 快速更新</h3>
+            <p class="ops-desc">选择本地 JSON 文件，将其中的题目合并到现有题库中（同游戏+同难度的题目会追加）。</p>
+            <div class="ops-row">
+                <input type="file" id="mergeFile" accept=".json,application/json" style="display:none" />
+                <button class="admin-btn btn-primary" onclick="document.getElementById('mergeFile').click()">🔀 合并 JSON 到题库</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 编辑器 -->
+    <section class="editor-section">
+        <div class="editor-header">
+            <h2><span>✏️</span> 题目编辑</h2>
+            <div class="editor-controls">
+                <select id="gameSelect" onchange="onGameChange()"></select>
+                <select id="diffSelect" onchange="onDiffChange()"></select>
+                <button class="admin-btn btn-primary" onclick="addNewQuestion()">➕ 新增题目</button>
+            </div>
+        </div>
+
+        <div class="editor-body">
+            <div class="question-list" id="questionList"></div>
+        </div>
+    </section>
+</main>
+
+<!-- 编辑/新增 弹窗 -->
+<div class="modal-mask" id="editModal" style="display:none;">
+    <div class="modal-box modal-box-lg">
+        <h3 id="formTitle">编辑题目</h3>
+        <div class="form-group" id="formGroup">
+            <!-- 动态渲染表单 -->
+        </div>
+        <div class="form-actions">
+            <button class="admin-btn btn-primary" onclick="saveQuestion()">💾 保存</button>
+            <button class="admin-btn btn-ghost" onclick="closeForm()">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 密码校验弹窗（管理员入口二次确认） -->
+<div class="modal-mask" id="authModal" style="display:none;">
+    <div class="modal-box">
+        <h3>🔒 管理员验证</h3>
+        <p>请输入管理员密码</p>
+        <input type="password" id="authPwd" class="pwd-input" />
+        <div class="modal-actions">
+            <button class="admin-btn btn-primary" onclick="verifyAuth()">确认</button>
+            <button class="admin-btn btn-ghost" onclick="location.href='./index.html'">返回</button>
+        </div>
+    </div>
+</div>
+
+<script src="./questions.js"></script>
+<script src="./common.js"></script>
+<script src="./admin.js"></script>
+</body>
+</html>

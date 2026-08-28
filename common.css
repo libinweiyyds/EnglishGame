@@ -42,6 +42,57 @@ body {
 button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 a { text-decoration: none; color: inherit; }
 
+/* ===== 管理员入口（悬浮齿轮） ===== */
+.admin-float-btn {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(255, 154, 118, 0.4);
+    color: #ff9a76;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+    opacity: 0.35;
+    transform: scale(0.9);
+    transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    backdrop-filter: blur(6px);
+}
+.admin-float-btn:hover {
+    opacity: 1;
+    transform: scale(1.08) rotate(45deg);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 20px rgba(255, 154, 118, 0.35);
+}
+.admin-float-btn:active {
+    transform: scale(0.95) rotate(45deg);
+}
+.admin-float-btn svg {
+    transition: transform 0.4s ease;
+}
+.admin-float-btn:hover svg {
+    animation: adminSpin 3s linear infinite;
+}
+@keyframes adminSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@media (max-width: 600px) {
+    .admin-float-btn {
+        width: 38px;
+        height: 38px;
+    }
+    .admin-float-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
 /* ===== 背景装饰 ===== */
 .bg-decor {
     position: fixed;

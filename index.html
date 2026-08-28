@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🧩 英语脑力乐园 · 选个游戏开始玩吧</title>
     <link rel="stylesheet" href="./assets/emoji.css" />
-    <link rel="stylesheet" href="./common.css" />
+    <link rel="stylesheet" href="./common.css?v=20260828" />
+    <style>
+    /* 管理员悬浮按钮 — 内联样式确保不被缓存覆盖 */
+    .admin-float-btn{position:fixed!important;right:12px;bottom:12px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.6);border:2px solid rgba(255,154,118,.4);color:#ff9a76;display:flex!important;align-items:center;justify-content:center;cursor:pointer;z-index:999;opacity:.35;transform:scale(.9);transition:opacity .25s,transform .25s,background .25s,box-shadow .25s;backdrop-filter:blur(6px)}
+    .admin-float-btn:hover{opacity:1;transform:scale(1.08) rotate(45deg);background:rgba(255,255,255,.95);box-shadow:0 6px 20px rgba(255,154,118,.35)}
+    .admin-float-btn:active{transform:scale(.95) rotate(45deg)}
+    .admin-float-btn svg{transition:transform .4s}
+    .admin-float-btn:hover svg{animation:adminSpin 3s linear infinite}
+    @keyframes adminSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    @media(max-width:600px){.admin-float-btn{width:38px;height:38px}.admin-float-btn svg{width:18px;height:18px}}
+    </style>
 </head>
 <body>
 <div class="bg-decor">
@@ -117,6 +127,12 @@
 
 <footer>
     <span>🌈 英语脑力乐园 · 纯前端 · 无服务器 · 双击 <code>index.html</code> 即可开始</span>
+    <div id="hiddenSettingsBtn" class="admin-float-btn" title="" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+    </div>
 </footer>
 
 <script src="./questions.js"></script>
@@ -275,6 +291,31 @@
     setupMascot();
     loadQuestions();
     renderGames();
+
+    // 隐藏管理员入口：连续5次点击右下角隐蔽按钮 → 输入密码进入
+    (function() {
+        const btn = document.getElementById('hiddenSettingsBtn');
+        let count = 0;
+        let timer = null;
+        if (!btn) return;
+        btn.addEventListener('click', function() {
+            count++;
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => { count = 0; }, 2000); // 2秒内连点5次
+            if (count >= 5) {
+                count = 0;
+                timer = null;
+                const pwd = prompt('请输入管理员密码：');
+                if (pwd === null) return;
+                if (pwd === 'cl') {
+                    sessionStorage.setItem('brainpark_admin_auth', '1');
+                    window.location.href = './admin.html';
+                } else {
+                    alert('密码错误');
+                }
+            }
+        });
+    })();
 </script>
 </body>
 </html>

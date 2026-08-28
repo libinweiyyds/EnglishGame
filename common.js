@@ -84,23 +84,100 @@ function setDifficultyLocal(diff) {
 }
 
 /* ----- 加载题库 -----
-   优先级：window.QUESTION_BANK（来自 questions.js，双击打开即用）
-            ▶ fetch('./questions.json')（HTTP 环境二次校验）
+   优先级：localStorage 自定义题库（用户编辑过的）
+            ▶ window.QUESTION_BANK（来自 questions.js）
+            ▶ fetch('./questions.json')
             ▶ generateFallbackBank()（最后兜底）
+   首次加载时将默认题库存入 localStorage，后续优先使用本地版本。
 */
+
+const LS_BANK_KEY = 'brainpark_question_bank';
+const LS_BANK_FLAG = 'brainpark_bank_initialized';
+
 async function loadQuestionBank() {
-    if (typeof window !== 'undefined' && window.QUESTION_BANK) {
-        return window.QUESTION_BANK;
-    }
+    // 1. 优先使用 localStorage 中的自定义题库
     try {
-        const resp = await fetch('./questions.json');
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        return await resp.json();
+        const saved = localStorage.getItem(LS_BANK_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                return parsed;
+            }
+        }
+    } catch (_) {}
+
+    // 2. 加载默认题库
+    let bank = null;
+    if (typeof window !== 'undefined' && window.QUESTION_BANK) {
+        bank = window.QUESTION_BANK;
+    } else {
+        try {
+            const resp = await fetch('./questions.json');
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            bank = await resp.json();
+        } catch (e) {
+            console.warn('无法加载 questions.json / questions.js，使用备用题库。', e);
+            bank = generateFallbackBank();
+        }
+    }
+
+    // 3. 首次加载：将默认题库存入 localStorage
+    try {
+        if (!localStorage.getItem(LS_BANK_FLAG)) {
+            localStorage.setItem(LS_BANK_KEY, JSON.stringify(bank));
+            localStorage.setItem(LS_BANK_FLAG, '1');
+        }
+    } catch (_) {}
+
+    return bank;
+}
+
+/* ----- 题库持久化工具函数 ----- */
+
+function saveBankToLocal(bank) {
+    try {
+        localStorage.setItem(LS_BANK_KEY, JSON.stringify(bank));
+        return true;
     } catch (e) {
-        console.warn('无法加载 questions.json / questions.js，使用备用题库。', e);
-        return generateFallbackBank();
+        console.error('保存题库到 localStorage 失败:', e);
+        return false;
     }
 }
+
+function clearLocalBank() {
+    try {
+        localStorage.removeItem(LS_BANK_KEY);
+        localStorage.removeItem(LS_BANK_FLAG);
+        return true;
+    } catch (_) {
+        return false;
+    }
+}
+
+function getLocalBank() {
+    try {
+        const saved = localStorage.getItem(LS_BANK_KEY);
+        if (saved) return JSON.parse(saved);
+    } catch (_) {}
+    return null;
+}
+
+function hasLocalBank() {
+    try {
+        return !!localStorage.getItem(LS_BANK_FLAG);
+    } catch (_) {
+        return false;
+    }
+}
+
+/* ----- 题库结构常量 ----- */
+const GAME_TYPES = ['match', 'odd', 'connect', 'sentence', 'detective', 'groups'];
+const DIFFICULTIES = ['easy', 'light', 'medium', 'hard', 'nightmare'];
+const GAME_NAMES = {
+    match: '单词配对', odd: '找不同', connect: '词语桥梁',
+    sentence: '句子拼拼乐', detective: '小侦探', groups: '分类小达人'
+};
+const DIFF_NAMES = { easy: '简单', light: '轻松', medium: '中等', hard: '困难', nightmare: '噩梦' };
 
 function generateFallbackBank() {
     const bank = {};
