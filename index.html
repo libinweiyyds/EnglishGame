@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🧩 英语脑力乐园 · 选个游戏开始玩吧</title>
     <link rel="stylesheet" href="./assets/emoji.css" />
-    <link rel="stylesheet" href="./common.css?v=20260828" />
+    <link rel="stylesheet" href="./common.css?v=20260828e" />
     <style>
     /* 管理员悬浮按钮 — 内联样式确保不被缓存覆盖 */
     .admin-float-btn{position:fixed!important;right:12px;bottom:12px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.6);border:2px solid rgba(255,154,118,.4);color:#ff9a76;display:flex!important;align-items:center;justify-content:center;cursor:pointer;z-index:999;opacity:.35;transform:scale(.9);transition:opacity .25s,transform .25s,background .25s,box-shadow .25s;backdrop-filter:blur(6px)}
@@ -19,17 +19,39 @@
 </head>
 <body>
 <div class="bg-decor">
+    <!-- 气球 -->
     <span class="balloon b1">🎈</span>
     <span class="balloon b2">🎈</span>
-    <span class="balloon b3"></span>
+    <span class="balloon b3">🎈</span>
+    <!-- 云朵 -->
     <span class="cloud c1">~</span>
     <span class="cloud c2">~</span>
     <span class="cloud c3">~</span>
+    <!-- 星星 -->
     <span class="sparkle s1">✨</span>
     <span class="sparkle s2">⭐</span>
     <span class="sparkle s3">✨</span>
     <span class="sparkle s4">⭐</span>
-    <span class="sparkle s5"></span>
+    <span class="sparkle s5">🌟</span>
+    <!-- 彩虹 -->
+    <span class="rainbow r1">🌈</span>
+    <span class="rainbow r2">🌈</span>
+    <!-- 爱心 -->
+    <span class="heart h1">💖</span>
+    <span class="heart h2">💕</span>
+    <span class="heart h3">💗</span>
+    <!-- 糖果 -->
+    <span class="candy ca1">🍭</span>
+    <span class="candy ca2">🍬</span>
+    <!-- 泡泡 -->
+    <span class="bubble bu1"></span>
+    <span class="bubble bu2"></span>
+    <span class="bubble bu3"></span>
+    <span class="bubble bu4"></span>
+    <span class="bubble bu5"></span>
+    <span class="bubble bu6"></span>
+    <span class="bubble bu7"></span>
+    <span class="bubble bu8"></span>
 </div>
 
 <header class="topbar">
@@ -46,10 +68,23 @@
 <main>
     <!-- 顶部欢迎横幅 -->
     <section class="welcome">
+        <div class="welcome-decor">
+            <span class="wd wd1">🎪</span>
+            <span class="wd wd2">🎨</span>
+            <span class="wd wd3">🎠</span>
+            <span class="wd wd4">🎡</span>
+            <span class="wd wd5">🦄</span>
+            <span class="wd wd6">🐻</span>
+            <span class="wd wd7">🐰</span>
+        </div>
         <div class="welcome-inner">
             <div class="welcome-text">
                 <span class="welcome-tag">🌟 欢迎来到脑力乐园</span>
-                <h1>嗨，小探险家！<br/>准备好<span class="hl">边玩边学</span>了吗？</h1>
+                <h1>
+                    <span class="title-word">嗨，</span>
+                    <span class="title-word">小探险家！</span><br/>
+                    <span class="title-word">准备好</span><span class="hl">边玩边学</span><span class="title-word">了吗？</span>
+                </h1>
                 <p>六个超级有趣的小游戏，从简单到困难，<br/>每次挑战都能学到新单词和新本领 🎈</p>
                 <div class="welcome-stats">
                     <div class="stat-pill"><span>🎮</span><strong id="totalGames">6</strong> 个游戏</div>
@@ -60,8 +95,13 @@
             <div class="welcome-mascot" id="mascot">
                 <div class="mascot-body">🦊</div>
                 <div class="mascot-bubble">点我打个招呼！</div>
+                <span class="mascot-deco md1">✨</span>
+                <span class="mascot-deco md2">⭐</span>
+                <span class="mascot-deco md3">💫</span>
             </div>
         </div>
+        <!-- 彩带纸屑 -->
+        <div class="confetti-layer" id="confettiLayer"></div>
     </section>
 
     <!-- 难度选择 -->
@@ -72,29 +112,29 @@
         </div>
         <div class="difficulty-bar" id="difficultyBar">
             <button class="diff-btn active" data-diff="easy">
-                <span class="diff-face"></span>
+                <span class="diff-face">😊</span>
                 <span class="diff-label">简单</span>
-                <span class="diff-stars"></span>
+                <span class="diff-stars">⭐</span>
             </button>
             <button class="diff-btn" data-diff="light">
-                <span class="diff-face"></span>
+                <span class="diff-face">😄</span>
                 <span class="diff-label">轻松</span>
-                <span class="diff-stars"></span>
+                <span class="diff-stars">⭐⭐</span>
             </button>
             <button class="diff-btn" data-diff="medium">
-                <span class="diff-face"></span>
+                <span class="diff-face">🤔</span>
                 <span class="diff-label">中等</span>
-                <span class="diff-stars"></span>
+                <span class="diff-stars">⭐⭐⭐</span>
             </button>
             <button class="diff-btn" data-diff="hard">
-                <span class="diff-face"></span>
+                <span class="diff-face">😤</span>
                 <span class="diff-label">困难</span>
-                <span class="diff-stars"></span>
+                <span class="diff-stars">⭐⭐⭐⭐</span>
             </button>
             <button class="diff-btn" data-diff="nightmare">
-                <span class="diff-face"></span>
+                <span class="diff-face">😱</span>
                 <span class="diff-label">噩梦</span>
-                <span class="diff-stars"></span>
+                <span class="diff-stars">⭐⭐⭐⭐⭐</span>
             </button>
         </div>
     </section>
@@ -126,7 +166,6 @@
 </main>
 
 <footer>
-    <span>🌈 英语脑力乐园 · 纯前端 · 无服务器 · 双击 <code>index.html</code> 即可开始</span>
     <div id="hiddenSettingsBtn" class="admin-float-btn" title="" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"/>
@@ -211,13 +250,16 @@
             return;
         }
         let html = '';
+        let idx = 0;
         Object.entries(GAME_META).forEach(([id, meta]) => {
             const pool = (questionBank[id] && questionBank[id][currentDifficulty]) || [];
             const count = pool.length;
             const available = count > 0;
+            idx++;
             html += `
-                <article class="game-card color-${meta.color}${available ? '' : ' locked'}">
+                <article class="game-card color-${meta.color}${available ? '' : ' locked'} style="animation-delay:${idx * 0.08}s" data-game="${id}">
                 <div class="game-card-glow"></div>
+                <div class="card-sparks"></div>
                 <div class="game-card-icon">
                     <span class="game-emoji">${meta.icon}</span>
                     <span class="game-deco d1">✨</span>
@@ -235,13 +277,24 @@
                         <span class="game-stars">${available ? '⭐⭐⭐' : ''}</span>
                     </div>
                     ${available
-                        ? `<a class="play-btn" href="${meta.file}">开始玩 <span class="arrow">▶</span></a>`
+                        ? `<a class="play-btn" href="${meta.file}" onmouseenter="burstSparkles(this)">开始玩 <span class="arrow">▶</span></a>`
                         : `<button class="play-btn disabled" disabled>暂无题目</button>`}
                 </div>
             </article>
             `;
         });
         grid.innerHTML = html;
+        // 添加入场动画 — 强制重排确保动画触发
+        const cards = grid.querySelectorAll('.game-card');
+        // 先清除可能存在的类，强制浏览器重排
+        cards.forEach(c => c.classList.remove('card-enter'));
+        // force reflow
+        void grid.offsetWidth;
+        requestAnimationFrame(() => {
+            cards.forEach((card, i) => {
+                setTimeout(() => card.classList.add('card-enter'), i * 80);
+            });
+        });
     }
 
     // 加载题库（来自 common.js，会自动优先用 window.QUESTION_BANK）
@@ -269,7 +322,61 @@
             void bubble.offsetWidth;
             bubble.style.animation = 'popBubble 0.5s ease';
             playPop();
+            // 彩带效果
+            launchConfetti();
         });
+    }
+
+    // 彩带纸屑
+    function launchConfetti() {
+        const layer = document.getElementById('confettiLayer');
+        if (!layer) return;
+        const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#1dd1a1', '#ff9ff3', '#f368e0', '#54a0ff', '#5f27cd'];
+        const emojis = ['🎉', '🎊', '⭐', '✨', '💫', '🌟', '💖', '💕'];
+        for (let i = 0; i < 30; i++) {
+            const c = document.createElement('span');
+            c.className = 'confetti';
+            if (Math.random() > 0.5) {
+                c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                c.style.fontSize = (14 + Math.random() * 18) + 'px';
+            } else {
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                c.style.width = (6 + Math.random() * 8) + 'px';
+                c.style.height = (6 + Math.random() * 8) + 'px';
+            }
+            c.style.left = (20 + Math.random() * 60) + '%';
+            c.style.top = '0';
+            c.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
+            c.style.setProperty('--ty', (150 + Math.random() * 250) + 'px');
+            c.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+            c.style.animationDuration = (1.8 + Math.random() * 1.5) + 's';
+            c.style.animationDelay = (Math.random() * 0.3) + 's';
+            layer.appendChild(c);
+            setTimeout(() => c.remove(), 3500);
+        }
+    }
+
+    // 按钮星光迸发
+    function burstSparkles(btn) {
+        const card = btn.closest('.game-card');
+        if (!card || card.classList.contains('locked')) return;
+        const sparksEl = card.querySelector('.card-sparks');
+        if (!sparksEl) return;
+        sparksEl.innerHTML = '';
+        const emojis = ['✨', '⭐', '💫', '🌟', '💖'];
+        for (let i = 0; i < 8; i++) {
+            const s = document.createElement('span');
+            s.className = 'spark-p';
+            s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            const angle = (Math.PI * 2 * i) / 8 + Math.random() * 0.6;
+            const dist = 40 + Math.random() * 40;
+            s.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+            s.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+            s.style.animationDelay = (i * 0.03) + 's';
+            sparksEl.appendChild(s);
+        }
+        setTimeout(() => { sparksEl.innerHTML = ''; }, 800);
     }
 
     // 初始化
@@ -316,6 +423,241 @@
             }
         });
     })();
+</script>
+
+<script>
+    /* ===== 互动层（独立脚本块，不受上面脚本错误影响） ===== */
+
+    // 通用：在指定位置迸发装饰粒子
+    function spawnDecorBurst(x, y, emojis) {
+        const count = 8 + Math.floor(Math.random() * 6);
+        for (let i = 0; i < count; i++) {
+            const s = document.createElement('span');
+            s.className = 'deco-spawn';
+            s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            s.style.left = x + 'px';
+            s.style.top = y + 'px';
+            const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+            const dist = 50 + Math.random() * 50;
+            s.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+            s.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+            s.style.fontSize = (14 + Math.random() * 12) + 'px';
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 1100);
+        }
+    }
+
+    // 1. 点击任意位置迸发粒子
+    (function() {
+        const burstLayer = document.createElement('div');
+        burstLayer.className = 'click-burst-layer';
+        document.body.appendChild(burstLayer);
+
+        const burstEmojis = ['✨', '⭐', '💫', '🌟', '💖', '💕', '🎉', '🎊', '🎈', '🌈', '🍭'];
+        let lastBurst = 0;
+
+        document.addEventListener('click', function(e) {
+            const now = Date.now();
+            if (now - lastBurst < 80) return;
+            lastBurst = now;
+
+            const tag = (e.target.tagName || '').toLowerCase();
+            if (tag === 'button' || tag === 'a' || tag === 'input' || tag === 'select' || tag === 'textarea') return;
+            if (e.target.closest('.admin-float-btn')) return;
+
+            const x = e.clientX;
+            const y = e.clientY;
+            const count = 6 + Math.floor(Math.random() * 6);
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('span');
+                p.className = 'burst-particle';
+                p.textContent = burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+                const dist = 40 + Math.random() * 60;
+                p.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+                p.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+                p.style.setProperty('--br', (Math.random() * 720 - 360) + 'deg');
+                p.style.fontSize = (14 + Math.random() * 14) + 'px';
+                burstLayer.appendChild(p);
+                setTimeout(() => p.remove(), 1300);
+            }
+        });
+    })();
+
+    // 2. 光标 emoji 拖尾
+    (function() {
+        const trailEmojis = ['✨', '⭐', '💫', '🌟', '💖', '🦋', '🌸', '🍀'];
+        let lastTrail = 0;
+
+        document.addEventListener('mousemove', function(e) {
+            const now = Date.now();
+            if (now - lastTrail < 60) return;
+            lastTrail = now;
+
+            const t = document.createElement('span');
+            t.className = 'cursor-trail';
+            t.textContent = trailEmojis[Math.floor(Math.random() * trailEmojis.length)];
+            t.style.left = e.clientX + 'px';
+            t.style.top = e.clientY + 'px';
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 20 + Math.random() * 30;
+            t.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+            t.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+            t.style.fontSize = (12 + Math.random() * 10) + 'px';
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 900);
+        });
+    })();
+
+    // 3. 鼠标视差 — 背景装饰微动
+    (function() {
+        const decor = document.querySelector('.bg-decor');
+        if (!decor) return;
+        const parallaxEls = decor.querySelectorAll('.balloon, .rainbow, .heart, .candy, .sparkle');
+        parallaxEls.forEach((el, i) => {
+            el.classList.add('parallax');
+            el.dataset.depth = (0.02 + (i % 5) * 0.015).toFixed(3);
+        });
+
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+
+        document.addEventListener('mousemove', function(e) {
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            targetX = (e.clientX - cx) / cx;
+            targetY = (e.clientY - cy) / cy;
+        });
+
+        function animate() {
+            currentX += (targetX - currentX) * 0.05;
+            currentY += (targetY - currentY) * 0.05;
+            parallaxEls.forEach(el => {
+                const depth = parseFloat(el.dataset.depth);
+                const x = currentX * depth * 100;
+                const y = currentY * depth * 60;
+                el.style.setProperty('--px', x + 'px');
+                el.style.setProperty('--py', y + 'px');
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    })();
+
+    // 4. 背景装饰点击互动
+    (function() {
+        const decor = document.querySelector('.bg-decor');
+        if (!decor) return;
+
+        decor.querySelectorAll('.balloon').forEach(balloon => {
+            balloon.style.pointerEvents = 'auto';
+            balloon.style.cursor = 'pointer';
+            balloon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (this.classList.contains('balloon-pop')) return;
+                this.classList.add('balloon-pop');
+                spawnDecorBurst(e.clientX, e.clientY, ['💥', '🎈', '✨', '💫']);
+                try { playPop(); } catch(_) {}
+                setTimeout(() => this.classList.remove('balloon-pop'), 600);
+            });
+        });
+
+        decor.querySelectorAll('.sparkle').forEach(s => {
+            s.style.pointerEvents = 'auto';
+            s.style.cursor = 'pointer';
+            s.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.add('sparkle-poof');
+                spawnDecorBurst(e.clientX, e.clientY, ['✨', '⭐', '💫', '🌟']);
+                setTimeout(() => this.classList.remove('sparkle-poof'), 700);
+            });
+        });
+
+        decor.querySelectorAll('.rainbow').forEach(r => {
+            r.style.pointerEvents = 'auto';
+            r.style.cursor = 'pointer';
+            r.addEventListener('click', function(e) {
+                e.stopPropagation();
+                spawnDecorBurst(e.clientX, e.clientY, ['🌈', '✨', '💫', '🎊', '🎉']);
+            });
+        });
+
+        decor.querySelectorAll('.heart').forEach(h => {
+            h.style.pointerEvents = 'auto';
+            h.style.cursor = 'pointer';
+            h.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.add('heart-burst');
+                spawnDecorBurst(e.clientX, e.clientY, ['💖', '💕', '💗', '✨', '💕']);
+                setTimeout(() => this.classList.remove('heart-burst'), 900);
+            });
+        });
+
+        decor.querySelectorAll('.candy').forEach(c => {
+            c.style.pointerEvents = 'auto';
+            c.style.cursor = 'pointer';
+            c.addEventListener('click', function(e) {
+                e.stopPropagation();
+                spawnDecorBurst(e.clientX, e.clientY, ['🍭', '🍬', '✨', '💫']);
+            });
+        });
+    })();
+
+    // 5. 欢迎横幅装饰点击互动
+    (function() {
+        const wd = document.querySelector('.welcome-decor');
+        if (!wd) return;
+        wd.querySelectorAll('.wd').forEach(el => {
+            el.style.pointerEvents = 'auto';
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const rect = this.getBoundingClientRect();
+                spawnDecorBurst(rect.left + rect.width / 2, rect.top + rect.height / 2,
+                    ['🎉', '🎊', '✨', '⭐', '💫', '🌟']);
+                try { playPop(); } catch(_) {}
+            });
+        });
+    })();
+
+    // 6. 显示浮动提示（首次访问）
+    (function() {
+        try {
+            if (localStorage.getItem('brainpark_hint_seen')) return;
+        } catch(_) {}
+        const hint = document.createElement('div');
+        hint.className = 'floating-hint';
+        hint.textContent = '👆 试试点击任意位置、戳戳装饰元素吧！';
+        document.body.appendChild(hint);
+        try { localStorage.setItem('brainpark_hint_seen', '1'); } catch(_) {}
+        setTimeout(() => hint.remove(), 9000);
+    })();
+
+    // 7. 卡片星光迸发（hover时触发）
+    const grid = document.getElementById('gameGrid');
+    if (grid) {
+        grid.addEventListener('mouseover', function(e) {
+            const card = e.target.closest('.game-card');
+            if (!card || card.classList.contains('locked') || card.dataset.sparkled) return;
+            // 只在第一次 hover 时触发一次星光
+            card.dataset.sparkled = '1';
+            const container = card.querySelector('.card-sparks');
+            if (!container) return;
+            const emojis = ['✨', '⭐', '💫', '🌟', '💖'];
+            for (let i = 0; i < 8; i++) {
+                const p = document.createElement('span');
+                p.className = 'spark-p';
+                p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                const angle = (Math.PI * 2 * i) / 8;
+                p.style.setProperty('--dx', Math.cos(angle) * 80 + 'px');
+                p.style.setProperty('--dy', Math.sin(angle) * 80 + 'px');
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 700);
+            }
+        });
+    }
 </script>
 </body>
 </html>

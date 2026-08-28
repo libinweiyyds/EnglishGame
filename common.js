@@ -101,7 +101,17 @@ async function loadQuestionBank() {
         if (saved) {
             const parsed = JSON.parse(saved);
             if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-                return parsed;
+                // 验证题库有效性：至少有1个游戏有题目
+                const total = Object.values(parsed).reduce(
+                    (s, g) => s + Object.values(g || {}).reduce(
+                        (s2, d) => s2 + (Array.isArray(d) ? d.length : 0), 0), 0);
+                if (total > 0) {
+                    return parsed;
+                }
+                // 题库为空，清除损坏数据，回退到默认
+                console.warn('localStorage 题库为空，回退到默认题库');
+                localStorage.removeItem(LS_BANK_KEY);
+                localStorage.removeItem(LS_BANK_FLAG);
             }
         }
     } catch (_) {}

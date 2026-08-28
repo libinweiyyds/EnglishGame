@@ -32,11 +32,20 @@ html { scroll-behavior: smooth; }
 
 body {
     font-family: 'Comic Sans MS', 'Chalkboard SE', 'Quicksand', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
-    background: linear-gradient(180deg, #fff7ed 0%, #fde8f3 50%, #e0f2fe 100%);
+    background: linear-gradient(135deg, #fff7ed, #fde8f3, #e0f2fe, #fff0f5, #f0e6ff, #e6fff5);
+    background-size: 400% 400%;
+    animation: bgFlow 18s ease-in-out infinite;
     min-height: 100vh;
     overflow-x: hidden;
     color: #2d1b3d;
     position: relative;
+}
+
+@keyframes bgFlow {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 50% 0%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 100%; }
 }
 
 button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
@@ -425,16 +434,32 @@ main {
     overflow: hidden;
     background: #fff;
     box-shadow: var(--shadow-card);
-    transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
     display: flex;
     flex-direction: column;
     cursor: pointer;
     border: 3px solid transparent;
 }
+.game-card.card-enter {
+    animation: cardEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes cardEnter {
+    0% { opacity: 0; transform: translateY(40px) scale(0.92); }
+    60% { opacity: 1; transform: translateY(-6px) scale(1.04); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
 .game-card.locked { opacity: 0.55; cursor: not-allowed; }
 .game-card:hover:not(.locked) {
     transform: translateY(-12px) scale(1.02);
     box-shadow: var(--shadow-hover);
+}
+.game-card:hover:not(.locked) .game-emoji {
+    animation: emojiExcited 0.4s ease;
+}
+@keyframes emojiExcited {
+    0%, 100% { transform: scale(1) rotate(0); }
+    25% { transform: scale(1.4) rotate(-15deg); }
+    75% { transform: scale(1.4) rotate(15deg); }
 }
 
 .game-card-glow {
@@ -669,4 +694,478 @@ footer code {
     .main { padding: 16px 12px 40px; }
     .mascot-body { font-size: 80px; }
     .mascot-bubble { font-size: 12px; right: -20px; }
+}
+
+/* ====================================================================
+   生动化升级 — 装饰、动画、互动
+   ==================================================================== */
+
+/* ===== 背景装饰扩展 ===== */
+.bg-decor .rainbow {
+    font-size: 48px;
+    animation: rainbowFloat 9s ease-in-out infinite;
+}
+.r1 { left: 3%; top: 45%; animation-delay: -2s; }
+.r2 { right: 5%; top: 72%; animation-delay: -5s; font-size: 38px; }
+
+@keyframes rainbowFloat {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-22px) rotate(5deg); }
+}
+
+.bg-decor .heart {
+    font-size: 28px;
+    animation: heartBeat 2.4s ease-in-out infinite;
+}
+.h1 { left: 8%; top: 62%; animation-delay: 0s; }
+.h2 { left: 92%; top: 22%; animation-delay: -0.8s; font-size: 24px; }
+.h3 { left: 55%; top: 88%; animation-delay: -1.6s; font-size: 22px; }
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1) rotate(-8deg); }
+    50% { transform: scale(1.25) rotate(8deg); }
+}
+
+.bg-decor .candy {
+    font-size: 32px;
+    animation: candySpin 12s linear infinite;
+}
+.ca1 { left: 20%; top: 35%; }
+.ca2 { left: 82%; top: 50%; animation-delay: -4s; font-size: 26px; }
+
+@keyframes candySpin {
+    0% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(10deg) translateY(-8px); }
+    50% { transform: rotate(0deg) translateY(0); }
+    75% { transform: rotate(-10deg) translateY(-4px); }
+    100% { transform: rotate(0deg) translateY(0); }
+}
+
+/* 泡泡 */
+.bg-decor .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.85), rgba(255,255,255,0.15));
+    border: 1px solid rgba(255,255,255,0.5);
+    animation: bubbleRise 8s ease-in-out infinite;
+}
+.bu1 { left: 12%; bottom: -40px; width: 18px; height: 18px; animation-duration: 9s; animation-delay: 0s; }
+.bu2 { left: 25%; bottom: -40px; width: 12px; height: 12px; animation-duration: 7s; animation-delay: -2s; }
+.bu3 { left: 40%; bottom: -40px; width: 22px; height: 22px; animation-duration: 11s; animation-delay: -4s; }
+.bu4 { left: 58%; bottom: -40px; width: 14px; height: 14px; animation-duration: 8s; animation-delay: -1s; }
+.bu5 { left: 72%; bottom: -40px; width: 16px; height: 16px; animation-duration: 10s; animation-delay: -3s; }
+.bu6 { left: 85%; bottom: -40px; width: 10px; height: 10px; animation-duration: 6s; animation-delay: -5s; }
+.bu7 { left: 35%; bottom: -40px; width: 20px; height: 20px; animation-duration: 12s; animation-delay: -6s; }
+.bu8 { left: 65%; bottom: -40px; width: 14px; height: 14px; animation-duration: 9s; animation-delay: -7s; }
+
+@keyframes bubbleRise {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-110vh) scale(0.6); opacity: 0; }
+}
+
+/* ===== 欢迎横幅装饰 ===== */
+.welcome-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.welcome-decor .wd {
+    position: absolute;
+    font-size: 36px;
+    opacity: 0.7;
+    animation: decorFloat 4s ease-in-out infinite;
+}
+.wd1 { left: 4%; top: 10%; animation-delay: 0s; font-size: 42px; }
+.wd2 { right: 8%; top: 8%; animation-delay: -1s; font-size: 30px; }
+.wd3 { left: 15%; bottom: 8%; animation-delay: -2s; font-size: 34px; }
+.wd4 { right: 15%; bottom: 12%; animation-delay: -3s; font-size: 38px; }
+.wd5 { right: 35%; top: 5%; animation-delay: -1.5s; font-size: 28px; }
+.wd6 { left: 40%; bottom: 5%; animation-delay: -2.5s; font-size: 26px; }
+.wd7 { right: 45%; bottom: 3%; animation-delay: -0.5s; font-size: 28px; }
+
+@keyframes decorFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-12px) rotate(5deg); }
+    66% { transform: translateY(-6px) rotate(-3deg); }
+}
+
+/* 欢迎标题逐字动画 */
+.title-word {
+    display: inline-block;
+    animation: wordPop 0.6s ease both;
+}
+.welcome h1 .title-word:nth-child(1) { animation-delay: 0.1s; }
+.welcome h1 .title-word:nth-child(2) { animation-delay: 0.2s; }
+.welcome h1 .title-word:nth-child(3) { animation-delay: 0.5s; }
+.welcome h1 .title-word:nth-child(4) { animation-delay: 0.6s; }
+.welcome h1 .title-word:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes wordPop {
+    0% { opacity: 0; transform: translateY(30px) scale(0.5); }
+    60% { transform: translateY(-8px) scale(1.1); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 吉祥物装饰 */
+.mascot-deco {
+    position: absolute;
+    z-index: 4;
+    font-size: 22px;
+    animation: mascotSparkle 2s ease-in-out infinite;
+}
+.mascot-deco.md1 { top: -8px; left: 10px; animation-delay: 0s; }
+.mascot-deco.md2 { top: 30px; right: -15px; animation-delay: -0.7s; font-size: 18px; }
+.mascot-deco.md3 { bottom: 20px; left: -20px; animation-delay: -1.4s; font-size: 18px; }
+
+@keyframes mascotSparkle {
+    0%, 100% { opacity: 0.6; transform: scale(0.8) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
+}
+
+/* ===== 彩带纸屑 ===== */
+.confetti-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 3;
+}
+.confetti {
+    position: absolute;
+    top: 0;
+    font-size: 16px;
+    animation: confettiFall 2.5s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+    will-change: transform, opacity;
+}
+@keyframes confettiFall {
+    0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx, 0), var(--ty, 250px)) rotate(var(--rot, 360deg)) scale(0.6); }
+}
+
+/* ===== 难度按钮动效 ===== */
+.diff-btn {
+    position: relative;
+    overflow: hidden;
+}
+.diff-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.6), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+.diff-btn:hover::after { opacity: 1; }
+.diff-btn.active {
+    animation: diffBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.diff-btn:active {
+    transform: translateY(2px) scale(0.96);
+}
+
+@keyframes diffBounce {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.08); }
+    70% { transform: scale(0.96); }
+    100% { transform: scale(1); }
+}
+
+.diff-face {
+    display: inline-block;
+    transition: transform 0.3s;
+}
+.diff-btn:hover .diff-face {
+    transform: scale(1.3) rotate(-10deg);
+}
+.diff-btn.active .diff-face {
+    animation: faceWiggle 1s ease-in-out infinite;
+}
+@keyframes faceWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+}
+
+/* ===== 游戏卡片入场（已合并到主定义） ===== */
+
+/* 卡片星光迸发 */
+.card-sparks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+.spark-p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 18px;
+    animation: sparkBurst 0.7s ease-out forwards;
+    pointer-events: none;
+}
+@keyframes sparkBurst {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.3) rotate(0deg); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2) rotate(360deg); }
+}
+
+/* 卡片 hover 光晕增强（已合并到主定义） */
+
+/* ===== 按钮微动画 ===== */
+.chip-btn {
+    transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.chip-btn:active {
+    transform: scale(0.92);
+}
+
+/* 开始按钮脉冲 */
+.play-btn {
+    position: relative;
+    overflow: hidden;
+}
+.play-btn::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: btnShimmer 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+.play-btn:hover::before { opacity: 1; }
+@keyframes btnShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.play-btn:active {
+    animation: btnPress 0.3s ease;
+}
+@keyframes btnPress {
+    0% { transform: translateY(-3px); }
+    50% { transform: translateY(4px) scale(0.98); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* ===== 标签弹跳 ===== */
+.g-tag {
+    transition: transform 0.2s;
+    cursor: default;
+}
+.g-tag:hover {
+    transform: translateY(-2px) scale(1.08);
+    background: #ffe8d6;
+}
+
+/* ===== 欢迎标签脉动 ===== */
+.welcome-tag {
+    animation: tagPulse 2s ease-in-out infinite;
+}
+@keyframes tagPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+}
+
+/* ===== 统计数字弹跳 ===== */
+.stat-pill strong {
+    display: inline-block;
+    animation: statBounce 2s ease-in-out infinite;
+}
+.stat-pill:nth-child(2) strong { animation-delay: -0.4s; }
+.stat-pill:nth-child(3) strong { animation-delay: -0.8s; }
+@keyframes statBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+/* ===== 底部提示卡片 ===== */
+.footer-card {
+    animation: footerFloat 5s ease-in-out infinite;
+}
+@keyframes footerFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* ===== 响应式补充 ===== */
+@media (max-width: 600px) {
+    .welcome-decor .wd { font-size: 22px; }
+    .wd1 { font-size: 26px; }
+    .wd4 { font-size: 24px; }
+    .bg-decor .rainbow { font-size: 30px; }
+    .bg-decor .heart { font-size: 20px; }
+    .bg-decor .candy { font-size: 22px; }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ====================================================================
+   互动层 — 点击粒子、光标拖尾、视差、可点击装饰
+   ==================================================================== */
+
+/* ===== 点击迸发粒子层 ===== */
+.click-burst-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+.burst-particle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 20px;
+    z-index: 10000;
+    animation: burstFly 1.2s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+    will-change: transform, opacity;
+}
+@keyframes burstFly {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.3) rotate(0deg); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1.3) rotate(var(--br)); }
+}
+
+/* ===== 光标拖尾 ===== */
+.cursor-trail {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    font-size: 18px;
+    animation: trailFade 0.8s ease-out forwards;
+    will-change: transform, opacity;
+}
+@keyframes trailFade {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.4); }
+}
+
+/* ===== 可点击背景装饰 ===== */
+.bg-decor .balloon,
+.bg-decor .rainbow,
+.bg-decor .heart,
+.bg-decor .candy,
+.bg-decor .sparkle {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.bg-decor .balloon:hover { transform: scale(1.3) rotate(10deg); filter: brightness(1.2); }
+.bg-decor .sparkle:hover { transform: scale(1.5) rotate(30deg); filter: brightness(1.5); }
+.bg-decor .heart:hover { transform: scale(1.4); }
+.bg-decor .rainbow:hover { transform: scale(1.3) rotate(-5deg); }
+.bg-decor .candy:hover { transform: scale(1.3); }
+
+.balloon-pop {
+    animation: balloonPop 0.5s ease-out forwards !important;
+}
+@keyframes balloonPop {
+    0% { transform: scale(1); opacity: 1; }
+    40% { transform: scale(1.8); opacity: 0.8; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+.sparkle-poof {
+    animation: sparklePoof 0.6s ease-out forwards !important;
+}
+@keyframes sparklePoof {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+    50% { transform: scale(2.5) rotate(180deg); opacity: 0.7; }
+    100% { transform: scale(0) rotate(720deg); opacity: 0; }
+}
+
+.heart-burst {
+    animation: heartBurst 0.8s ease-out forwards !important;
+}
+@keyframes heartBurst {
+    0% { transform: scale(1); }
+    30% { transform: scale(2); }
+    100% { transform: scale(0) translateY(-60px); opacity: 0; }
+}
+
+/* 点击装饰时迸发的小粒子 */
+.deco-spawn {
+    position: fixed;
+    pointer-events: none;
+    font-size: 16px;
+    z-index: 9999;
+    animation: decoSpawn 1s ease-out forwards;
+}
+@keyframes decoSpawn {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.4); }
+}
+
+/* ===== 鼠标视差 ===== */
+.parallax-layer {
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+}
+
+/* 背景装饰响应鼠标微动 */
+.bg-decor .balloon.parallax { transition: transform 0.6s ease-out; }
+.bg-decor .sparkle.parallax { transition: transform 0.5s ease-out; }
+.bg-decor .rainbow.parallax { transition: transform 0.7s ease-out; }
+.bg-decor .heart.parallax { transition: transform 0.5s ease-out; }
+.bg-decor .candy.parallax { transition: transform 0.6s ease-out; }
+
+/* ===== 欢迎横幅互动 ===== */
+.welcome-mascot {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.welcome-mascot:hover {
+    transform: scale(1.08) rotate(-5deg);
+}
+.welcome-mascot:active {
+    transform: scale(0.92);
+}
+
+/* 欢迎横幅可点击装饰 */
+.welcome-decor .wd {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.welcome-decor .wd:hover {
+    transform: scale(1.3) !important;
+    filter: brightness(1.2) drop-shadow(0 0 8px rgba(255,255,255,0.8));
+}
+
+/* ===== 游戏卡片 hover（已合并到主定义） ===== */
+
+/* ===== 浮动小工具提示 ===== */
+.floating-hint {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(45, 27, 61, 0.85);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 999;
+    pointer-events: none;
+    animation: hintFloat 3s ease-in-out infinite, hintFade 8s ease-out 1s forwards;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+@keyframes hintFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-6px); }
+}
+@keyframes hintFade {
+    0%, 70% { opacity: 1; }
+    100% { opacity: 0; }
 }
