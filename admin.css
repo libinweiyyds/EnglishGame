@@ -83,6 +83,10 @@
     border: 2px solid #ffc9c0;
 }
 
+.btn-danger:hover {
+    background: #ffe8e4;
+}
+
 .btn-del {
     background: #fff;
     color: #e74c3c;
@@ -137,9 +141,10 @@
 /* 数据操作区 */
 .data-ops {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
     margin-bottom: 28px;
+    align-items: stretch;
 }
 
 .ops-card {
@@ -148,12 +153,16 @@
     border-radius: 18px;
     padding: 20px;
     box-shadow: 0 4px 14px rgba(255, 154, 118, 0.12);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .ops-card h3 {
     margin: 0 0 8px;
     font-size: 16px;
     color: #ff7a45;
+    flex-shrink: 0;
 }
 
 .ops-desc {
@@ -161,12 +170,16 @@
     font-size: 13px;
     color: #666;
     line-height: 1.5;
+    min-height: 58px;
+    flex-shrink: 0;
 }
 
 .ops-row {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    margin-top: auto;
+    flex-shrink: 0;
 }
 
 /* 编辑器区 */

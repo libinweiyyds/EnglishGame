@@ -325,6 +325,33 @@ function deleteQuestion(index) {
     renderStats();
 }
 
+/* ----- 清空当前游戏 ----- */
+
+function clearCurrentGame() {
+    const gameName = GAME_NAMES[currentGame] || currentGame;
+    let totalCount = 0;
+    for (const d of DIFFICULTIES) {
+        if (currentBank[currentGame] && currentBank[currentGame][d]) {
+            totalCount += currentBank[currentGame][d].length;
+        }
+    }
+    if (totalCount === 0) {
+        alert(`「${gameName}」当前没有任何题目。`);
+        return;
+    }
+    if (!confirm(`确定清空「${gameName}」的全部 ${totalCount} 道题目？\n此操作不可撤销，建议先导出备份。`)) return;
+    if (!confirm(`再次确认：真的要清空「${gameName}」的所有题目吗？`)) return;
+
+    // 清空该游戏下所有难度的题目
+    for (const d of DIFFICULTIES) {
+        if (!currentBank[currentGame]) break;
+        currentBank[currentGame][d] = [];
+    }
+    saveBankToLocal(currentBank);
+    renderQuestionList();
+    renderStats();
+}
+
 /* ----- 导出 ----- */
 
 function exportBank() {
